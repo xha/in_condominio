@@ -1,14 +1,15 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
 use Yii;
-use app\models\RolAccion;
-use app\models\RolAccionSearch;
-use app\models\AccessHelpers;
+use backend\models\RolAccion;
+use backend\models\RolAccionSearch;
+use common\models\AccessHelpers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * RolAccionController implements the CRUD actions for RolAccion model.
@@ -75,9 +76,20 @@ class RolAccionController extends Controller
     public function actionCreate()
     {
         $model = new RolAccion();
+        $connection = \Yii::$app->db;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_accion' => $model->id_accion, 'id_rol' => $model->id_rol]);
+        if ($model->load(Yii::$app->request->post())) {
+            $detalle = explode("#",$_POST['i_items']);  
+            
+            $query = "DELETE FROM isco_RolAccion WHERE id_rol=".$model->id_rol;
+            $connection->createCommand($query)->query();
+            for ($i=0;$i < count($detalle) - 1;$i++) {
+                $query = "INSERT INTO isco_RolAccion(id_rol,id_accion,modifica) 
+                        VALUES (".$model->id_rol.",".$detalle[$i].",1)";
+                $connection->createCommand($query)->query();
+            }
+            
+            return $this->redirect(['index', 'id_rol' => $model->id_rol]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -92,12 +104,23 @@ class RolAccionController extends Controller
      * @param integer $id_rol
      * @return mixed
      */
-    public function actionUpdate($id_accion, $id_rol)
+    public function actionUpdate($id_accion = null, $id_rol)
     {
-        $model = $this->findModel($id_accion, $id_rol);
+        $model = new RolAccion();
+        $connection = \Yii::$app->db;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_accion' => $model->id_accion, 'id_rol' => $model->id_rol]);
+        if ($model->load(Yii::$app->request->post())) {
+            $detalle = explode("#",$_POST['i_items']);  
+            
+            $query = "DELETE FROM isco_RolAccion WHERE id_rol=".$model->id_rol;
+            $connection->createCommand($query)->query();
+            for ($i=0;$i < count($detalle) - 1;$i++) {
+                $query = "INSERT INTO isco_RolAccion(id_rol,id_accion,modifica) 
+                        VALUES (".$model->id_rol.",".$detalle[$i].",1)";
+                $connection->createCommand($query)->query();
+            }
+            
+            return $this->redirect(['index', 'id_rol' => $model->id_rol]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -119,14 +142,22 @@ class RolAccionController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the RolAccion model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id_accion
-     * @param integer $id_rol
-     * @return RolAccion the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    public function actionBuscarAccion($rol = null) {
+        $extra="";
+        if ($rol>0) $extra = ' and r.id_rol='.$rol;
+        $connection = \Yii::$app->db;
+
+        $query = "select a.id_accion, a.descripcion, r.id_rol
+                from isco_Accion a
+                left join isco_RolAccion r on a.id_accion=r.id_accion
+                WHERE 1=1 $extra 
+                ORDER BY a.descripcion,a.id_accion";
+
+        $pendientes = $connection->createCommand($query)->queryAll();
+        //$pendientes = $comand->readAll();
+        echo Json::encode($pendientes);
+    }
+
     protected function findModel($id_accion, $id_rol)
     {
         if (($model = RolAccion::findOne(['id_accion' => $id_accion, 'id_rol' => $id_rol])) !== null) {
@@ -136,3 +167,4 @@ class RolAccionController extends Controller
         }
     }
 }
+

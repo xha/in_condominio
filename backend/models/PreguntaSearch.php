@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models;
+namespace backend\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Pregunta;
+use backend\models\Pregunta;
 
 /**
  * PreguntaSearch represents the model behind the search form about `app\models\Pregunta`.
@@ -19,7 +19,7 @@ class PreguntaSearch extends Pregunta
     {
         return [
             [['id_pregunta', 'activo'], 'integer'],
-            [['nombre'], 'safe'],
+            [['descripcion'], 'safe'],
         ];
     }
 
@@ -63,7 +63,7 @@ class PreguntaSearch extends Pregunta
             'activo' => $this->activo,
         ]);
 
-        $query->andFilterWhere(['like', 'nombre', $this->nombre]);
+        $query->andFilterWhere(['like', 'descripcion', $this->descripcion]);
 
         return $dataProvider;
     }

@@ -1,11 +1,10 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
 use Yii;
-use app\models\Usuario;
-use app\models\UsuarioSearch;
-use app\models\AccessHelpers;
+use common\models\Usuario;
+use common\models\AccessHelpers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

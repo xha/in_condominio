@@ -1,11 +1,11 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
 use Yii;
-use app\models\Rol;
-use app\models\RolSearch;
-use app\models\AccessHelpers;
+use backend\models\Rol;
+use backend\models\RolSearch;
+use common\models\AccessHelpers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -111,7 +111,10 @@ class RolController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $connection = \Yii::$app->db;
+        $query = "UPDATE isco_Rol SET activo=0 WHERE id_rol=".$id;
+        $connection->createCommand($query)->query();
+        //$this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }

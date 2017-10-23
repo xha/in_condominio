@@ -3,7 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
-use app\models\Pregunta;
+use backend\models\Pregunta;
+use backend\models\Sadepo;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
@@ -41,15 +42,17 @@ $this->title = 'Registro';
 
     <label class="control-label">Pregunta</label>
     <?= Html::activeDropDownList($model, 'id_pregunta',
-      ArrayHelper::map(Pregunta::find()->where(['activo' => '1'])->OrderBy('nombre')->all(), 'id_pregunta', 'nombre'), ['class'=>'form-control']) ?>
+      ArrayHelper::map(Pregunta::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_pregunta', 'descripcion'), ['class'=>'form-control']) ?>
 
     <br />
     <?= $form->field($model, 'respuesta_seguridad')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'CodUbic')->dropDownList(ArrayHelper::map(Sadepo::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodUbic', 'Descrip')); ?>
+    
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

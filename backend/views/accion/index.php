@@ -7,22 +7,25 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\AccionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Accions';
+$this->title = 'Acciones';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="accion-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Accion', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Acción', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function ($model, $index, $widget, $grid){
+            if($model->activo == 0) return ['style' => 'background-color: #FADCAC'];
+        },
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
             'id_accion',
             'descripcion',

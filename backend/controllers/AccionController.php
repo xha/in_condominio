@@ -1,14 +1,15 @@
 <?php
 
-namespace app\controllers;
+namespace backend\controllers;
 
 use Yii;
-use app\models\Accion;
-use app\models\AccionSearch;
-use app\models\AccessHelpers;
+use backend\models\Accion;
+use backend\models\AccionSearch;
+use common\models\AccessHelpers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 
 /**
  * AccionController implements the CRUD actions for Accion model.
@@ -111,7 +112,10 @@ class AccionController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $connection = \Yii::$app->db;
+        $query = "UPDATE isco_Accion SET activo=0 WHERE id_accion=".$id;
+        $connection->createCommand($query)->query();
+        //$this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }

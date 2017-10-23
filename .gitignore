@@ -33,3 +33,11 @@ phpunit.phar
 
 # vagrant runtime
 /.vagrant
+=======
+assets/*
+!assets/.gitignore
+protected/runtime/*
+!protected/runtime/.gitignore
+protected/data/*.db
+themes/classic/views/
+origin/master

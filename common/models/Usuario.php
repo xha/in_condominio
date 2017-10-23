@@ -30,9 +30,12 @@ class Usuario extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    
+    public $clave_actual;
+    
     public static function tableName()
     {
-        return 'is_usuario';
+        return 'isco_usuario';
     }
 
     /**
@@ -49,6 +52,7 @@ class Usuario extends \yii\db\ActiveRecord
             [['correo', 'nombre', 'apellido'], 'string', 'max' => 100],
             [['cedula'], 'string', 'max' => 15],
             [['clave'], 'string', 'max' => 250],
+            [['CodUbic'], 'string', 'max' => 10],
             [['sexo'], 'string', 'max' => 1],
             [['respuesta_seguridad'], 'string', 'max' => 1000],
             [['id_pregunta'], 'exist', 'skipOnError' => true, 'targetClass' => Pregunta::className(), 'targetAttribute' => ['id_pregunta' => 'id_pregunta']],
@@ -75,6 +79,7 @@ class Usuario extends \yii\db\ActiveRecord
             'activo' => 'Activo',
             'id_rol' => 'Id Rol',
             'id_pregunta' => 'Id Pregunta',
+            'CodUbic' => 'Ubicación Física',
         ];
     }
 

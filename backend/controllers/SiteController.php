@@ -5,12 +5,13 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use app\models\AccessHelpers;
-use app\models\LoginForm;
-use app\models\RegisterForm;
-use app\models\RecuperarClaveForm;
-use app\models\ActivarForm;
+use common\models\AccessHelpers;
 use common\models\Usuario;
+use backend\models\LoginForm;
+use backend\models\RegisterForm;
+use backend\models\RecuperarClaveForm;
+use backend\models\ActivarForm;
+use backend\models\CambiarClaveForm;
 use yii\widgets\ActiveForm;
 use yii\web\Response;
 use yii\helpers\Url;
@@ -70,7 +71,7 @@ class SiteController extends Controller
     ],
     */
 
-    /*public function beforeAction($action)
+    public function beforeAction($action)
     {
         if (!parent::beforeAction($action)) {
             return false;
@@ -147,8 +148,8 @@ class SiteController extends Controller
                 $table->id_rol = 1;
                 $table->id_pregunta = $model->id_pregunta;
                 $table->respuesta_seguridad = $model->respuesta_seguridad;
+                $table->CodUbic = $model->CodUbic;
                 $table->activo = 0;
-                $table->log_in = 0;
                 $table->clave = md5("is".$model->clave);
                 
                 //Si el registro es guardado correctamente
@@ -167,6 +168,51 @@ class SiteController extends Controller
           }
 
         return $this->render('register', [
+            'model' => $model,
+            'msg' => $msg
+        ]);  
+    }
+    
+    public function actionCambiar() {
+        $model = new CambiarClaveForm;
+           
+        $msg = null;
+        
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax)
+        {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        if ($model->load(Yii::$app->request->post()))
+        {
+            if($model->validate()) {
+                //Preparamos la consulta para guardar el usuario
+                $table = new Usuario;
+                $table->id_usuario = $model->id_usuario;
+                $table->clave = md5("is".$model->clave);
+                $table->clave_actual = md5("is".$model->clave_actual);
+                
+                $connection = \Yii::$app->db;
+
+                $query = "UPDATE isco_usuario
+                SET clave='".$table->clave."'
+                OUTPUT INSERTED.clave
+                where id_usuario='".$table->id_usuario."' and clave='".$table->clave_actual."'";
+                $salida = $connection->createCommand($query)->queryOne();
+        
+                if ($salida['clave']!="") {
+                    $msg = "Clave Actualizada";
+                } else {
+                    $msg = "Error al actualizar la clave";
+                }
+                
+            } else {
+                $model->getErrors();
+            }
+          }
+
+        return $this->render('cambiar', [
             'model' => $model,
             'msg' => $msg
         ]);  
@@ -195,7 +241,7 @@ class SiteController extends Controller
             $clave = md5("is".$model->clave);
             $connection = \Yii::$app->db;
 
-            $query = "UPDATE is_usuario
+            $query = "UPDATE isco_usuario
             SET clave='$clave'
             where usuario='".$model->usuario."' and id_pregunta=".$model->id_pregunta." and respuesta_seguridad='".$model->respuesta_seguridad."' and correo='".$model->correo."'";
             $msg = $connection->createCommand($query)->execute();
@@ -220,18 +266,17 @@ class SiteController extends Controller
         $msg = null;
         $data = array();
         
-        $query = "SELECT usuario FROM IS_USUARIO";
+        $query = "SELECT usuario FROM isco_USUARIO";
         $data1 = $connection->createCommand($query)->queryAll();
 
         for($i=0;$i<count($data1);$i++) {
             $data[]= $data1[$i]['usuario'];
         }
         
-        if ($model->load(Yii::$app->request->post()))
-        {
-            $query = "UPDATE is_usuario
-            SET id_rol=".$model->id_rol."
-            where id_usuario='".$model->id_usuario."'";
+        if ($model->load(Yii::$app->request->post())) {
+            $query = "UPDATE isco_USUARIO
+            SET id_rol=".$model->id_rol.", CodUbic='".$model->CodUbic."', activo=".$model->activado."
+            where usuario='".$model->usuario."'";
             $msg = $connection->createCommand($query)->execute();
             
             if ($msg > 0) {
@@ -240,7 +285,7 @@ class SiteController extends Controller
                 $msg = "Error al Actualizar";
             };
         }
-
+        
         return $this->render('activar', [
             'model' => $model,
             'msg' => $msg,

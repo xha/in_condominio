@@ -101,7 +101,9 @@ class PisoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $connection = \Yii::$app->db;
+        $query = "UPDATE ISCO_Piso SET activo=0 WHERE id_piso=".$id;
+        $connection->createCommand($query)->query();
 
         return $this->redirect(['index']);
     }

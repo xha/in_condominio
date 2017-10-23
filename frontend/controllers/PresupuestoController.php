@@ -80,14 +80,29 @@ class PresupuestoController extends Controller
         $model = new Presupuesto();
         $connection = \Yii::$app->db;
         $data = array();
-        
+        $items = array();
+        /********************** CLIENTES ***************************************/
         $query = "SELECT CodClie,Descrip FROM SACLIE where Activo=1";
         $data1 = $connection->createCommand($query)->queryAll();
         
         for($i=0;$i<count($data1);$i++) {
             $data[]= $data1[$i]['CodClie']." - ".$data1[$i]['Descrip'];
         }
-
+        /********************** ITEMS ******************************************/
+        $query = "SELECT CodProd,Descrip,Descrip2,Descrip3 FROM SAPROD where Activo=1";
+        $data1 = $connection->createCommand($query)->queryAll();
+        
+        for($i=0;$i<count($data1);$i++) {
+            $items[]= $data1[$i]['CodProd']." - ".$data1[$i]['Descrip'].$data1[$i]['Descrip2'].$data1[$i]['Descrip3'];
+        }
+        
+        $query = "SELECT CodServ,Descrip,Descrip2,Descrip3 FROM SASERV where Activo=1";
+        $data1 = $connection->createCommand($query)->queryAll();
+        
+        for($i=0;$i<count($data1);$i++) {
+            $items[]= $data1[$i]['CodServ']." - ".$data1[$i]['Descrip'].$data1[$i]['Descrip2'].$data1[$i]['Descrip3'];
+        }
+        
         if ($model->load(Yii::$app->request->post())) {
             //var_dump($model->attributes);
             //print_r($_POST);
@@ -115,58 +130,73 @@ class PresupuestoController extends Controller
             $model->ID3 = $cliente['ID3'];
             $model->Descrip = $cliente['Descrip'];
             /*************************************************************************************************/
-            //GUARDO EL MODELO, OJO
-            $model->save();
-            /*************************************************************************************************/
-            //AUMENTO EL CORRELATIVO DEL PRESUPUESTO
-            $query = "UPDATE SACORRELSIS SET ValueInt=(ValueInt+1) WHERE FieldName='PrxProf'";
-            $connection->createCommand($query)->query();
-            /*************************************************************************************************/
-            $detalle = explode("¬",$_POST['i_items']);  
-            $query = "DELETE FROM SAITEMFAC WHERE TipoFac='F' and NumeroD='".$model->NumeroD."'";
-            $connection->createCommand($query)->query();
-            for ($i=0;$i < count($detalle) - 1;$i++) {
-                $campos = explode("#",$detalle[$i]);
-                //Nro   Código  Descripción     Cantidad    Precio  Tax     Descuento   Total   Serv CodTax
-                if ($campos[5]>0) {
-                    $exen = 0;
-                    $EsExento=0;
-                    $grav = round(($campos[3] * $campos[4]),2);
-                    
-                    $monto_tax = 0;
-                    $query3 = "SELECT * FROM SATAXES WHERE CodTaxs='".$campos[9]."'";
-                    $satax = $connection->createCommand($query3)->queryOne();
-                    $monto_tax = $satax['MtoTax'];
+            $transaction = $connection->beginTransaction();
+            try {                
+                //GUARDO EL MODELO, OJO
+                $model->save();
+                /*************************************************************************************************/
+                //AUMENTO EL CORRELATIVO DEL PRESUPUESTO
+                $query = "UPDATE SACORRELSIS SET ValueInt=(ValueInt+1) WHERE FieldName='PrxProf'";
+                $connection->createCommand($query)->query();
+                /*************************************************************************************************/
+                $detalle = explode("¬",$_POST['i_items']);  
+                $query = "DELETE FROM SAITEMFAC WHERE TipoFac='F' and NumeroD='".$model->NumeroD."'";
+                $connection->createCommand($query)->query();
+                for ($i=0;$i < count($detalle) - 1;$i++) {
+                    $campos = explode("#",$detalle[$i]);
+                    //Nro   Código  Descripción     Cantidad    Precio  Tax     Descuento   Total   Serv CodTax
+                    if ($campos[5]>0) {
+                        $exen = 0;
+                        $EsExento=0;
+                        $grav = round(($campos[3] * $campos[4]),2);
 
-                    $query2 = "INSERT INTO SATAXITF(CodSucu,TipoFac,NumeroD,NroLinea,NroLineaC,CodTaxs,CodItem,Monto,TGravable,MtoTax) VALUES ('".$model->CodSucu."','F',".$model->NumeroD.",".($i+1).",0,'".$campos[9]."','".$campos[1]."',".$campos[5].",".$campos[7].",".$monto_tax.")";
+                        $monto_tax = 0;
+                        $query3 = "SELECT * FROM SATAXES WHERE CodTaxs='".$campos[9]."'";
+                        $satax = $connection->createCommand($query3)->queryOne();
+                        $monto_tax = $satax['MtoTax'];
+
+                        $query2 = "INSERT INTO SATAXITF(CodSucu,TipoFac,NumeroD,NroLinea,NroLineaC,CodTaxs,CodItem,Monto,TGravable,MtoTax) 
+                                VALUES ('".$model->CodSucu."','F',".$model->NumeroD.",".($i+1).",0,'".$campos[9]."','".$campos[1]."',".$campos[5].",".$campos[7].",".$monto_tax.")";
+                        $connection->createCommand($query2)->query();
+                    } else {
+                        $grav = 0;
+                        $EsExento=1;
+                        $exen = round(($campos[3] * $campos[4]),2);
+                    }
+
+                    $query2 = "INSERT INTO SAITEMFAC(CodSucu, TipoFac, NumeroD, NroLinea, NroLineaC, CodItem, CodUbic, CodVend, Descrip1, Refere, Signo, CantMayor, Cantidad, TotalItem, 
+                            Costo, Precio, MtoTax, PriceO, Descto, NroUnicoL, FechaE, EsServ, EsExento) VALUES ('".$model->CodSucu."','F',".$model->NumeroD.",".($i+1).",0,'".$campos[1]."',
+                            '".$model->CodUbic."','".$model->CodVend."','".$campos[2]."','".$campos[1]."',1,".$campos[3].",".$campos[3].",".$campos[7].",0,".$campos[4].",".$campos[5].",
+                            ".$campos[4].",".$campos[6].",0,'".$model->FechaE."',".$campos[8].",$EsExento);";
                     $connection->createCommand($query2)->query();
-                } else {
-                    $grav = 0;
-                    $EsExento=1;
-                    $exen = round(($campos[3] * $campos[4]),2);
                 }
+                /********************************************************************************************************************/
+                //ACTUALIZO LA TABLA SATAXVTA
+                $query3 = "SELECT CodTaxs,MtoTax,sum(Monto) as Monto, sum(TGravable) as TGravable 
+                        FROM SATAXITF 
+                        WHERE TipoFac='F' and NumeroD='".$model->NumeroD."'
+                        GROUP BY CodTaxs,MtoTax";
+                $sataxvta = $connection->createCommand($query3)->queryAll();
 
-                $query2 = "INSERT INTO SAITEMFAC(CodSucu, TipoFac, NumeroD, NroLinea, NroLineaC, CodItem, CodUbic, CodVend, Descrip1, Refere, Signo, CantMayor, Cantidad, TotalItem, Costo, Precio, MtoTax, PriceO, Descto, NroUnicoL, FechaE, EsServ, EsExento) VALUES ('".$model->CodSucu."','F',".$model->NumeroD.",".($i+1).",0,".$campos[1].",'".$model->CodUbic."','".$model->CodVend."','".$campos[2]."','".$campos[1]."',1,".$campos[3].",".$campos[3].",".$campos[7].",0,".$campos[4].",".$campos[5].",".$campos[4].",".$campos[6].",0,'".$model->FechaE."',".$campos[8].",$EsExento);";
-                $connection->createCommand($query2)->query();
+                for ($i=0;$i<count($sataxvta);$i++) {
+                    $query2 = "INSERT INTO SATAXVTA(CodSucu,TipoFac,NumeroD,CodTaxs,Monto,MtoTax,TGravable,EsReten) VALUES ('".$model->CodSucu."','F',".$model->NumeroD.",
+                            '".$sataxvta[$i]['CodTaxs']."','".$sataxvta[$i]['Monto']."',".$sataxvta[$i]['MtoTax'].",".$sataxvta[$i]['TGravable'].",0)";
+                    $connection->createCommand($query2)->query();
+                }
+            } catch (\Exception $msg) {
+                $transaction->rollBack();
+                throw $msg;
+            } catch (\Throwable $msg) {
+                $transaction->rollBack();
+                throw $msg;
             }
             /********************************************************************************************************************/
-            //ACTUALIZO LA TABLA SATAXVTA
-            $query3 = "SELECT CodTaxs,MtoTax,sum(Monto) as Monto, sum(TGravable) as TGravable 
-                    FROM SATAXITF 
-                    WHERE TipoFac='F' and NumeroD='".$model->NumeroD."'
-                    GROUP BY CodTaxs,MtoTax";
-            $sataxvta = $connection->createCommand($query3)->queryAll();
-
-            for ($i=0;$i<count($sataxvta);$i++) {
-                $query2 = "INSERT INTO SATAXVTA(CodSucu,TipoFac,NumeroD,CodTaxs,Monto,MtoTax,TGravable,EsReten) VALUES ('".$model->CodSucu."','F',".$model->NumeroD.",'".$sataxvta[$i]['CodTaxs']."','".$sataxvta[$i]['Monto']."',".$sataxvta[$i]['MtoTax'].",".$sataxvta[$i]['TGravable'].",0)";
-                $connection->createCommand($query2)->query();
-            }
-            /********************************************************************************************************************/
-            return $this->redirect(['view', 'CodSucu' => $model->CodSucu, 'NumeroD' => $model->NumeroD, 'TipoFac' => $model->TipoFac]);
+            return $this->redirect(['presupuesto/index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
                 'data' => $data,
+                'items' => $items,
             ]);
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace backend\models;
 
 use Yii;
 
@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "is_pregunta".
  *
  * @property integer $id_pregunta
- * @property string $nombre
+ * @property string $descripcion
  * @property boolean $activo
  *
  * @property IsUsuario[] $isUsuarios
@@ -20,7 +20,7 @@ class Pregunta extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'is_pregunta';
+        return 'isco_pregunta';
     }
 
     /**
@@ -29,9 +29,9 @@ class Pregunta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre'], 'required'],
+            [['descripcion'], 'required'],
             [['activo'], 'boolean'],
-            [['nombre'], 'string', 'max' => 100],
+            [['descripcion'], 'string', 'max' => 100],
         ];
     }
 
@@ -42,7 +42,7 @@ class Pregunta extends \yii\db\ActiveRecord
     {
         return [
             'id_pregunta' => 'Id Pregunta',
-            'nombre' => 'Descripción',
+            'descripcion' => 'Descripción',
             'activo' => 'Activo',
         ];
     }
@@ -50,8 +50,8 @@ class Pregunta extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIsUsuarios()
+    public function getUsuarios()
     {
-        return $this->hasMany(IsUsuario::className(), ['id_pregunta' => 'id_pregunta']);
+        return $this->hasMany(Usuario::className(), ['id_pregunta' => 'id_pregunta']);
     }
 }

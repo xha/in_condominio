@@ -101,7 +101,9 @@ class UbicacionController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $connection = \Yii::$app->db;
+        $query = "UPDATE ISCO_Ubicacion SET activo=0 WHERE id_ubicacion=".$id;
+        $connection->createCommand($query)->query();
 
         return $this->redirect(['index']);
     }

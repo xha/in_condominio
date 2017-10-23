@@ -4,14 +4,16 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\Usuario;
-use app\models\Cliente;
-use app\models\Rol;
+use backend\models\Rol;
+use backend\models\Sadepo;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Rol */
 
 $this->title = 'Activar usuario';
+
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <h3><?= $msg ?></h3>
@@ -29,9 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) 
     ?>
 
-    <?= $form->field($model, 'id_rol')->dropDownList(ArrayHelper::map(Rol::find()->where(['activo' => '1'])->OrderBy('nombre')->all(), 'id_rol', 'nombre')); ?>
+    <?= $form->field($model, 'id_rol')->dropDownList(ArrayHelper::map(Rol::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_rol', 'descripcion')); ?>
+    
+    <?= $form->field($model, 'CodUbic')->dropDownList(ArrayHelper::map(Sadepo::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodUbic', 'Descrip')); ?>
 
-    <?= $form->field($model, "activado")->checkbox(); ?><br /><br />
+    <?= $form->field($model, 'activado')->checkbox(); ?><br /><br />
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Actualizar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -39,18 +43,3 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php ActiveForm::end(); ?>
 </div>
-
-<script type='text/javascript'>
-    function carga_observacion() {
-        var cliente = document.getElementById('activarform-observacion').value;
-        var usuario = document.getElementById('activarform-id_usuario').value;
-        
-        if (usuario.value!="") {
-            var parametros = "&usuario="+usuario;
-            $.get('../site/observacion',parametros,function(data){
-                var data = $.parseJSON(data);
-                document.getElementById('activarform-observacion').value = data['observacion'];
-            });
-        }
-    }
-</script>
