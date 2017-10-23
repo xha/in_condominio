@@ -8,7 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
-    'name'=>'Automotores',
+    'name'=>'Condominio',
     'language' => 'es',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
