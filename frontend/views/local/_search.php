@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\AlicuotaSearch */
+/* @var $model frontend\models\LocalSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="alicuota-search">
+<div class="local-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'descripcion') ?>
 
-    <?php // echo $form->field($model, 'porcentaje') ?>
+    <?= $form->field($model, 'metro') ?>
 
     <?php // echo $form->field($model, 'alquiler') ?>
 

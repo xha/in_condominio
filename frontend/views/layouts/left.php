@@ -18,7 +18,7 @@
                             ],];
             $menuItems[] = ['label' => 'Pisos', 'icon' => 'folder', 'url' => ['../../frontend/web/piso']];
             $menuItems[] = ['label' => 'Ubicaciones', 'icon' => 'gear', 'url' => ['../../frontend/web/ubicacion']];
-            $menuItems[] = ['label' => 'Alicuota', 'icon' => 'star', 'url' => ['../../frontend/web/alicuota']];
+            $menuItems[] = ['label' => 'Local', 'icon' => 'star', 'url' => ['../../frontend/web/local']];
             $menuItems[] = ['label' => 'Presupuesto', 'icon' => 'clock-o', 'url' => ['../../frontend/web/presupuesto']];
             $menuItems[] = ['label' => 'Condominio', 'icon' => 'folder-o', 'url' => ['../../frontend/web/presupuesto/procesar']];
             $menuItems[] = ['label' => 'Reportes', 'icon' => 'book', 'url' => '#',

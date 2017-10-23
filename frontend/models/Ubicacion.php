@@ -50,8 +50,8 @@ class Ubicacion extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAlicuotas()
+    public function getLocals()
     {
-        return $this->hasMany(Alicuota::className(), ['id_ubicacion' => 'id_ubicacion']);
+        return $this->hasMany(Local::className(), ['id_ubicacion' => 'id_ubicacion']);
     }
 }

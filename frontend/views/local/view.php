@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Alicuota */
+/* @var $model app\models\Local */
 
 $this->title = $model->id_alicuota;
-$this->params['breadcrumbs'][] = ['label' => 'Alicuotas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Locales', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="alicuota-view">
+<div class="local-view">
 
     <p>
         <?= Html::a('Actualizar', ['update', 'id' => $model->id_alicuota], ['class' => 'btn btn-primary']) ?>

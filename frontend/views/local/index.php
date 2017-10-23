@@ -4,16 +4,16 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\models\AlicuotaSearch */
+/* @var $searchModel frontend\models\LocalSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Alicuotas';
+$this->title = 'Locales';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="alicuota-index">
+<div class="local-index">
 
     <p>
-        <?= Html::a('Crear Alicuota', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Local', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
               'attribute'=>'id_piso',
               'value'=>'idPiso.nombre',
             ],
-            //'descripcion',
+            'metro',
              'porcentaje',
             // 'alquiler',
             // 'activo',

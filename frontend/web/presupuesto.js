@@ -1,4 +1,5 @@
     $(function() {
+        titulo_detalle();
         /*var id_solicitud = document.getElementById('solicitud-id_solicitud').value;
         var tabla = trae('listado_detalle');
         var i;
@@ -24,6 +25,18 @@
             });
         }*/
     });
+    
+    function titulo_detalle() {
+        var arreglo = new Array();
+            arreglo[0] = 'Código';
+            arreglo[1] = 'Descripción';
+            arreglo[2] = 'Add';
+
+        var tabla = document.getElementById('resultado_producto');
+            tabla.innerHTML = "";
+
+        tabla.appendChild(add_filas(arreglo, 'th','','',2));
+    }
 
     function enviar_data() {
         var i_items = document.getElementById('i_items');
@@ -104,6 +117,62 @@
         }
     }
 
+    function buscar_items() {
+        var m_producto = document.getElementById('m_producto').value;
+        var tabla = trae('resultado_producto');
+        var i;
+        var y;
+        var texto = "";
+
+        if (m_producto!="") {
+            titulo_detalle();
+            $.get('../presupuesto/buscar-producto',{codprod : m_producto},function(data){
+                var data = $.parseJSON(data);
+                var campos = Array();
+                var td = new Array();
+                var node = new Array();
+                if (data!="") {
+                    for (i = 0; i < data.length; i++) {
+                        otro = "";
+                        var tr = document.createElement('tr');
+                        var valor = i + 1;
+                        campos.length = 0;
+                        campos.push(data[i].CodServ);
+                        campos.push(data[i].Descrip);
+                        
+                        for (y = 0; y < campos.length; y++) {
+                            td[y] = document.createElement('td');
+                            texto = campos[y];
+                            td[y].align="left"; 
+                            node[y] = document.createTextNode(texto);
+                            td[y].appendChild(node[y]);
+                            tr.appendChild(td[y]);
+                        }
+                        
+                        y++;
+                        td[y] = document.createElement('td');
+                        var imagen = document.createElement('img');
+                        imagen.width = "24";
+                        imagen.style.padding = "3px";
+                        imagen.style.cursor = "pointer";
+                        imagen.src = "../../../img/mas.png";
+                        eval("imagen.onclick = function(){agregar_fila('"+data[i].CodServ+"');}");
+                        td[y].appendChild(imagen);
+                        tr.appendChild(td[y]);
+                        
+                        tabla.appendChild(tr);
+                    }
+                }
+            });
+        }
+    }
+
+    function agregar_fila(serv) {
+        trae('d_codigo').value = serv;
+        carga_servicios(serv);
+        $("#m_servicio").modal("hide");
+    }
+
     function carga_servicios(valor) {
         var tipo_item = trae("tipo_item").value;
         var d_nombre = trae("d_nombre");
@@ -142,8 +211,13 @@
         var sub;
         var selected;
 
-        if (d_descuento.value=="") d_descuento.value=0;
-        selected = iva.options[iva.selectedIndex].text;
+        if (descuento.value=="") descuento.value=0;
+        if (iva.value!="") {
+            selected = iva.options[iva.selectedIndex].text;
+        } else {
+            selected = 0;
+        }
+        
         if (selected=="") selected = 0;
 
         if ((precio>0) && (cantidad>0)) {

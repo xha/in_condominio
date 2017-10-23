@@ -8,11 +8,11 @@ use app\models\Ubicacion;
 use app\models\Piso;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Alicuota */
+/* @var $model app\models\Local */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="alicuota-form">
+<div class="local-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -30,7 +30,9 @@ use app\models\Piso;
 
     <?= $form->field($model, 'descripcion')->textInput() ?>
 
-    <?= $form->field($model, 'porcentaje')->textInput(['maxlength' => 5]) ?>
+    <?= $form->field($model, 'metro')->textInput() ?>
+    
+    <?= $form->field($model, 'porcentaje')->hiddenInput(['value' => 0])->label(false) ?>
 
     <?= $form->field($model, 'alquiler')->dropDownList(['0' => 'NO', '1' => 'SI']); ?>
 

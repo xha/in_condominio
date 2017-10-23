@@ -4,7 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 //use yii\jui\Tabs;
 use yii\helpers\ArrayHelper;
-use yii\jui\DatePicker;
+use yii\bootstrap\Modal;
+use kartik\date\DatePicker;
 use kartik\tabs\TabsX;
 use frontend\models\Savend;
 use frontend\models\Sadepo;
@@ -25,9 +26,9 @@ $id_usuario = Yii::$app->user->identity->id_usuario;
                     </td>
                     <td>
                         Tipo de Item<br />
-                        <select class="texto texto-ec" id="tipo_item">
-                            <option value="0">Producto</option>
+                        <select class="texto texto-ec" id="tipo_item" disabled="true">
                             <option value="1">Servicio</option>
+                            <option value="0">Producto</option>
                         </select>
                     </td>
                     <td>
@@ -177,18 +178,19 @@ $id_usuario = Yii::$app->user->identity->id_usuario;
                 </td>
             </tr>
             <tr>
-                <td align="right" valign="top"><br /><b>Fecha *</b></td>
-                <td valign="top">
-                    <?= $form->field($model,'FechaE')->label(false)->
-                        widget(DatePicker::className("texto"),[
-                            'dateFormat' => 'dd-MM-yyyy',
-                            'clientOptions' => [
-                                'changeYear' => true
-                            ],
-                            'options' => ['class' => 'texto texto-ec', 'readonly'=>true]
-                        ]) 
+                <td align="right"><br /><b>Fecha *</b></td>
+                <td>
+                    <?= $form->field($model, 'FechaE')->label(false)->widget(DatePicker::classname(), [
+                            'language' => 'es',
+                            'removeButton'=>false,
+                            'options' => ['class' => 'texto texto-ec', 'readonly' => true, 'value' => $fecha],
+                            'pluginOptions' => [
+                                'endDate' => date('d-m-Y'),
+                                'autoclose'=>true,
+                                'format' => 'dd-mm-yyyy',
+                            ]
+                        ]);
                     ?>
-                    <i class="fa fa-calendar"></i>
                 </td>
             </tr>
         </table>
@@ -215,7 +217,22 @@ $id_usuario = Yii::$app->user->identity->id_usuario;
             </tr>
         </table>
     </div>
+    <?php 
+        Modal::begin([
+            "id" => "m_servicio",
+            "header" => "<h3>Listado de Servicios</h3>",
+            "toggleButton" => ["label" => "Agregar Servicio", 'class' => 'btn btn-primary'],
+        ]);
 
+        echo "<input class='texto texto medio' id='m_producto' />
+            <label class='btn btn-primary' onclick='buscar_items()'>Buscar</label>
+            <br /><br />
+            <div style='max-height: 600px; overflow-y: scroll; width: 100%' >
+                <table id='resultado_producto' class='tablas inicial00' style='width: 98%'></table>
+            </div>";
+
+        Modal::end();
+    ?>
     <table>
         <tr>
             <td>

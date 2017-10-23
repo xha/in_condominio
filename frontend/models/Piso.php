@@ -50,8 +50,8 @@ class Piso extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAlicuotas()
+    public function getLocals()
     {
-        return $this->hasMany(Alicuota::className(), ['id_piso' => 'id_piso']);
+        return $this->hasMany(Local::className(), ['id_piso' => 'id_piso']);
     }
 }

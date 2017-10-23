@@ -5,12 +5,12 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Alicuota;
+use app\models\Local;
 
 /**
- * AlicuotaSearch represents the model behind the search form about `app\models\Alicuota`.
+ * LocalSearch represents the model behind the search form about `app\models\Local`.
  */
-class AlicuotaSearch extends Alicuota
+class LocalSearch extends Local
 {
     /**
      * @inheritdoc
@@ -20,7 +20,7 @@ class AlicuotaSearch extends Alicuota
         return [
             [['id_alicuota', 'id_ubicacion', 'id_piso', 'alquiler', 'activo'], 'integer'],
             [['CodClie', 'descripcion'], 'safe'],
-            [['porcentaje'], 'number'],
+            [['porcentaje','metro'], 'number'],
         ];
     }
 
@@ -42,7 +42,7 @@ class AlicuotaSearch extends Alicuota
      */
     public function search($params)
     {
-        $query = Alicuota::find();
+        $query = Local::find();
 
         // add conditions that should always apply here
 
@@ -64,6 +64,7 @@ class AlicuotaSearch extends Alicuota
             'id_ubicacion' => $this->id_ubicacion,
             'id_piso' => $this->id_piso,
             'porcentaje' => $this->porcentaje,
+            'metro' => $this->metro,
             'alquiler' => $this->alquiler,
             'activo' => $this->activo,
         ]);

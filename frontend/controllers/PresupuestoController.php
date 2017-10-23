@@ -254,6 +254,17 @@ class PresupuestoController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    public function actionBuscarProducto($codprod) {
+        $connection = \Yii::$app->db;
+        
+        $query = "SELECT CodServ,Descrip FROM SASERV WHERE Activo=1 and (Descrip like '%".$codprod."%' or 
+            CodServ like '%".$codprod."%')
+            ORDER BY Descrip desc";
+
+        $pendientes = $connection->createCommand($query)->queryAll();
+        echo Json::encode($pendientes);
+    }
 
     public function actionBuscarItems($codigo,$tipo) {
         $connection = \Yii::$app->db;

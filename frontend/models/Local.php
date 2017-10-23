@@ -20,7 +20,7 @@ use Yii;
  * @property ISCOUBICACION $idUbicacion
  * @property ISCOPISO $idPiso
  */
-class Alicuota extends \yii\db\ActiveRecord
+class Local extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -36,10 +36,11 @@ class Alicuota extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['CodClie','id_ubicacion', 'id_piso', 'descripcion'], 'required'],
+            [['CodClie','id_ubicacion', 'id_piso', 'descripcion', 'metro'], 'required'],
             [['CodClie', 'descripcion'], 'string'],
             [['id_ubicacion', 'id_piso', 'alquiler', 'activo'], 'integer'],
             [['porcentaje'], 'number', 'max' => 100],
+            [['metro'], 'number', 'min' => 1],
             [['CodClie'], 'exist', 'skipOnError' => true, 'targetClass' => Saclie::className(), 'targetAttribute' => ['CodClie' => 'CodClie']],
             [['id_ubicacion'], 'exist', 'skipOnError' => true, 'targetClass' => Ubicacion::className(), 'targetAttribute' => ['id_ubicacion' => 'id_ubicacion']],
             [['id_piso'], 'exist', 'skipOnError' => true, 'targetClass' => Piso::className(), 'targetAttribute' => ['id_piso' => 'id_piso']],
@@ -52,11 +53,12 @@ class Alicuota extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_alicuota' => 'Id Alicuota',
-            'CodClie' => 'Cod Clie',
-            'id_ubicacion' => 'Id Ubicacion',
-            'id_piso' => 'Id Piso',
-            'descripcion' => 'Descripcion',
+            'id_alicuota' => 'Id',
+            'CodClie' => 'Cliente',
+            'id_ubicacion' => 'Ubicacion',
+            'id_piso' => 'Piso',
+            'descripcion' => 'Descripcion del Local',
+            'metro' => 'Metros Cuadrados',
             'porcentaje' => 'Porcentaje',
             'alquiler' => '¿Es Alquiler?',
             'activo' => 'Activo',
