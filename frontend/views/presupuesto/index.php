@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //['class' => 'yii\grid\ActionColumn'],
             ['class' => 'yii\grid\ActionColumn',
-                'template' => '{print}',
+                'template' => '{update} {print}',
                 'buttons' => [
                     'print' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, [
@@ -134,12 +134,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) {
-                    if ($action === 'print') {
+                    if ($action === 'update') {
+                        $url = Yii::$app->urlManager->createUrl(['presupuesto/update?numerod='.$model->NumeroD]); // your own url generation logic
+                        return $url;
+                    } else {
                         $url = Yii::$app->urlManager->createUrl(['presupuesto/imprime-presupuesto?numerod='.$model->NumeroD]); // your own url generation logic
                         return $url;
                     }
-                }
-                          
+                } 
             ],
         ],
     ]); ?>

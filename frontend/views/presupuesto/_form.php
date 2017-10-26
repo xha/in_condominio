@@ -17,6 +17,9 @@ $this->registerJsFile('@web/general.js');
 $this->registerJsFile('@web/presupuesto.js');
 $this->registerCssFile('@web/css/general.css');
 $id_usuario = Yii::$app->user->identity->id_usuario;
+date_default_timezone_set("America/Caracas");
+$fecha= time();
+$fecha=date('d-m-Y',$fecha);
 
     $contenido1='<table class="tablas inicial_em1">
                 <tr>

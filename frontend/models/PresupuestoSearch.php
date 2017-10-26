@@ -158,7 +158,8 @@ class PresupuestoSearch extends Presupuesto
             ->andFilterWhere(['like', 'Notas7', $this->Notas7])
             ->andFilterWhere(['like', 'Notas8', $this->Notas8])
             ->andFilterWhere(['like', 'Notas9', $this->Notas9])
-            ->andFilterWhere(['like', 'Notas10', $this->Notas10]);
+            ->andFilterWhere(['like', 'Notas10', $this->Notas10])
+            ->orderBy('FechaT DESC');
 
         return $dataProvider;
     }
