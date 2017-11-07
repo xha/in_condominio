@@ -16,6 +16,7 @@
                                     ['label' => 'Activar Usuario', 'icon' => 'check', 'url' => ['../../backend/web/site/activar']],
                                     ['label' => 'Cambiar Clave', 'icon' => 'check', 'url' => ['../../backend/web/site/cambiar']],
                             ],];
+            $menuItems[] = ['label' => 'Canon', 'icon' => 'unlock', 'url' => ['../../frontend/web/correl/update?id=1']];
             $menuItems[] = ['label' => 'Pisos', 'icon' => 'folder', 'url' => ['../../frontend/web/piso']];
             $menuItems[] = ['label' => 'Ubicaciones', 'icon' => 'gear', 'url' => ['../../frontend/web/ubicacion']];
             $menuItems[] = ['label' => 'Local', 'icon' => 'star', 'url' => ['../../frontend/web/local']];

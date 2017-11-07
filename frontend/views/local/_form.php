@@ -35,11 +35,17 @@ use app\models\Piso;
     <?= $form->field($model, 'porcentaje')->hiddenInput(['value' => 0])->label(false) ?>
 
     <?= $form->field($model, 'alquiler')->dropDownList(['0' => 'NO', '1' => 'SI']); ?>
+    
+    <?= $form->field($model, 'tipo_alquiler')->dropDownList(['0' => 'Monto Fijo', '1' => 'Por Porcentaje', '2' => 'Mixto']); ?>
+    
+    <?= $form->field($model, 'monto_alquiler')->textInput() ?>
+    
+    <?= $form->field($model, 'porcentaje_alquiler')->textInput(); ?>
 
     <?= $form->field($model, 'activo')->dropDownList(['1' => 'SI', '0' => 'NO']); ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

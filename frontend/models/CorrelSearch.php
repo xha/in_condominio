@@ -5,12 +5,12 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Local;
+use frontend\models\Correl;
 
 /**
- * LocalSearch represents the model behind the search form about `app\models\Local`.
+ * CorrelSearch represents the model behind the search form about `frontend\models\Correl`.
  */
-class LocalSearch extends Local
+class CorrelSearch extends Correl
 {
     /**
      * @inheritdoc
@@ -18,9 +18,8 @@ class LocalSearch extends Local
     public function rules()
     {
         return [
-            [['id_alicuota', 'id_ubicacion', 'id_piso', 'alquiler', 'activo', 'tipo_alquiler'], 'integer'],
-            [['CodClie', 'descripcion'], 'safe'],
-            [['porcentaje','metro', 'monto_alquiler', 'porcentaje_alquiler'], 'number'],
+            [['id_correl'], 'integer'],
+            [['canon'], 'number'],
         ];
     }
 
@@ -42,7 +41,7 @@ class LocalSearch extends Local
      */
     public function search($params)
     {
-        $query = Local::find();
+        $query = Correl::find();
 
         // add conditions that should always apply here
 
@@ -60,17 +59,9 @@ class LocalSearch extends Local
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_alicuota' => $this->id_alicuota,
-            'id_ubicacion' => $this->id_ubicacion,
-            'id_piso' => $this->id_piso,
-            'porcentaje' => $this->porcentaje,
-            'metro' => $this->metro,
-            'alquiler' => $this->alquiler,
-            'activo' => $this->activo,
+            'id_correl' => $this->id_correl,
+            'canon' => $this->canon,
         ]);
-
-        $query->andFilterWhere(['like', 'CodClie', $this->CodClie])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion]);
 
         return $dataProvider;
     }
