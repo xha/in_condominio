@@ -63,7 +63,7 @@ class Local extends \yii\db\ActiveRecord
             'porcentaje' => 'Porcentaje',
             'alquiler' => '¿Tiene Arrendamiento?',
             'tipo_alquiler' => 'Tipo de Arrendamiento',
-            'monto_alquiler' => 'Monto de Arrendamiento',
+            'monto_alquiler' => 'Monto de Arrendamiento (o porcentaje según Cánon)',
             'porcentaje_alquiler' => 'Porcentaje de Arrendamiento mixto',
             'activo' => 'Activo',
         ];

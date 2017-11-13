@@ -6,16 +6,26 @@ use yii\helpers\ArrayHelper;
 use app\models\Saclie;
 use app\models\Ubicacion;
 use app\models\Piso;
+use yii\db\Query;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Local */
 /* @var $form yii\widgets\ActiveForm */
+$this->registerJsFile('@web/general.js');
+$this->registerJsFile('@web/js/local.js');
+$this->registerCssFile('@web/css/general.css');
 ?>
 
 <div class="local-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    
+    <label class="control-label">Cánon: </label>
+    <?php
+         $canon = Yii::$app->db->createCommand("SELECT top(1) canon FROM ISCO_Correl")->queryOne();
+         echo "<input readobly='true' class='texto texto-ec' name='canon' id='canon' value='".$canon['canon']."'> Bs.<br /><br />" ;
+    ?>
+    
     <label class="control-label">Cliente</label>
     <?= Html::activeDropDownList($model, 'CodClie',
       ArrayHelper::map(Saclie::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodClie', 'Descrip'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>
@@ -38,7 +48,7 @@ use app\models\Piso;
     
     <?= $form->field($model, 'tipo_alquiler')->dropDownList(['0' => 'Monto Fijo', '1' => 'Por Porcentaje', '2' => 'Mixto']); ?>
     
-    <?= $form->field($model, 'monto_alquiler')->textInput() ?>
+    <?= $form->field($model, 'monto_alquiler')->textInput(['onblur'=>'js:calcula_canon();']) ?>
     
     <?= $form->field($model, 'porcentaje_alquiler')->textInput(); ?>
 
