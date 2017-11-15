@@ -59,7 +59,7 @@
         if ((numerod!="") && (cliente)) {
             btn_enviar.disabled = true;
             imag.style.visibility = 'visible';
-            $.get('../presupuesto/procesar-condominio',{numerod : numerod, usuario: id_usuario},function(data){
+            $.get('../presupuesto/busca-procesar-condominio',{numerod : numerod, usuario: id_usuario},function(data){
                 var data = $.parseJSON(data);
                 respuesta(data.salida);
                 btn_enviar.disabled = false;

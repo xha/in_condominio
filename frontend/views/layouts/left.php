@@ -22,11 +22,7 @@
             $menuItems[] = ['label' => 'Local', 'icon' => 'star', 'url' => ['../../frontend/web/local']];
             $menuItems[] = ['label' => 'Presupuesto', 'icon' => 'clock-o', 'url' => ['../../frontend/web/presupuesto']];
             $menuItems[] = ['label' => 'Condominio', 'icon' => 'folder-o', 'url' => ['../../frontend/web/presupuesto/procesar']];
-            $menuItems[] = ['label' => 'Reportes', 'icon' => 'book', 'url' => '#',
-                                'items' => [
-                                    ['label' => 'Ordenes', 'icon' => 'check', 'url' => ['../../frontend/web/vw-resumen-orden/reporte-ordenes']],
-                                    ['label' => 'Consulta de Orden', 'icon' => 'check', 'url' => ['../../frontend/web/transaccion/consulta-estatus']],
-                            ],];
+            $menuItems[] = ['label' => 'Arrendamiento', 'icon' => 'lock', 'url' => ['../../frontend/web/presupuesto/arrendamiento']];
         }
     ?>
         <?= dmstr\widgets\Menu::widget(

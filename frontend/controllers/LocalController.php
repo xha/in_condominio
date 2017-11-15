@@ -65,7 +65,12 @@ class LocalController extends Controller
     {
         $model = new Local();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->alquiler==0) {
+                $model->monto_alquiler = 0;
+                $model->porcentaje_alquiler = 0;
+            }
+            $model->save();
             $connection = \Yii::$app->db;
             $query = "SET ANSI_NULLS ON; SET ANSI_WARNINGS ON; SET NOCOUNT ON; EXEC ISCO_PROCESA_ALICUOTA";
             $connection->createCommand($query)->execute();
