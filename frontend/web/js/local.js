@@ -5,7 +5,7 @@
         
         if (tipo==1) {
             if (canon.value=="") canon.value = 0;
-            if (monto.value > 100) monto.value = 100;
-            monto.value = (parseFloat(monto.value) * canon.value) / 100;
+            if (metro.value=="") metro.value = 0;
+            monto.value = (parseFloat(metro.value) * canon.value);
         }
     }
