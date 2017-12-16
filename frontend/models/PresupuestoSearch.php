@@ -115,6 +115,12 @@ class PresupuestoSearch extends Presupuesto
             'MtoComiCobD' => $this->MtoComiCobD,
         ]);
 
+        if ($this->Notas10>0) {
+            $extra = 'Notas10 IS NOT NULL';
+        } else {
+            $extra = 'Notas10 IS NULL';
+        }
+
         $query->andFilterWhere(['like', 'CodSucu', $this->CodSucu])
             ->andFilterWhere(['like', 'TipoFac', $this->TipoFac])
             ->andFilterWhere(['like', 'NumeroD', $this->NumeroD])
@@ -158,7 +164,7 @@ class PresupuestoSearch extends Presupuesto
             ->andFilterWhere(['like', 'Notas7', $this->Notas7])
             ->andFilterWhere(['like', 'Notas8', $this->Notas8])
             ->andFilterWhere(['like', 'Notas9', $this->Notas9])
-            ->andFilterWhere(['like', 'Notas10', $this->Notas10])
+            ->andFilterWhere(['not', $extra])
             ->orderBy('FechaT DESC');
 
         return $dataProvider;
