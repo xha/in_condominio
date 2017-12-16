@@ -116,9 +116,9 @@ class PresupuestoSearch extends Presupuesto
         ]);
 
         if ($this->Notas9>0) {
-            $extra = 'Notas9 IS NULL';
-        } else {
             $extra = 'Notas9 IS NOT NULL';
+        } else {
+            $extra = 'Notas9 IS NULL';
         }
 
         $query->andFilterWhere(['like', 'CodSucu', $this->CodSucu])
