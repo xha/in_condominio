@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use app\models\Saclie;
 use app\models\Ubicacion;
 use app\models\Piso;
+use frontend\models\Ccomercial;
 use yii\db\Query;
 
 /* @var $this yii\web\View */
@@ -30,6 +31,10 @@ $this->registerCssFile('@web/css/general.css');
     <?= Html::activeDropDownList($model, 'CodClie',
       ArrayHelper::map(Saclie::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodClie', 'Descrip'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>
 
+    <label class="control-label">Centro Comercial</label>
+    <?= Html::activeDropDownList($model, 'CodVend',
+      ArrayHelper::map(Ccomercial::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodVend', 'Descrip'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>
+    
     <label class="control-label">Ubicación</label>
     <?= Html::activeDropDownList($model, 'id_ubicacion',
       ArrayHelper::map(Ubicacion::find()->where(['activo' => '1'])->OrderBy('nombre')->all(), 'id_ubicacion', 'nombre'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>

@@ -35,7 +35,8 @@ class CcomercialController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CcomercialSearch();
+        $CodUbic = Yii::$app->user->identity->CodUbic;
+        $searchModel = new CcomercialSearch(['DescOrder'=>$CodUbic]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

@@ -18,9 +18,9 @@
                             ],];
             $menuItems[] = ['label' => 'Tablas Básicas', 'icon' => 'folder-o', 'url' => '#',
                                 'items' => [
-                                    ['label' => 'Canon', 'icon' => 'unlock', 'url' => ['../../frontend/web/correl/update?id=1']],
-                                    ['label' => 'Pisos', 'icon' => 'folder', 'url' => ['../../frontend/web/piso']],
-                                    ['label' => 'Ubicaciones', 'icon' => 'gear', 'url' => ['../../frontend/web/ubicacion']],
+                                    ['label' => 'Canon', 'icon' => 'check', 'url' => ['../../frontend/web/correl/update?id=1']],
+                                    ['label' => 'Pisos', 'icon' => 'check', 'url' => ['../../frontend/web/piso']],
+                                    ['label' => 'Ubicaciones', 'icon' => 'check', 'url' => ['../../frontend/web/ubicacion']],
                             ],];
             $menuItems[] = ['label' => 'Centro Comercial', 'icon' => 'home', 'url' => ['../../frontend/web/ccomercial']];
             $menuItems[] = ['label' => 'Local', 'icon' => 'star', 'url' => ['../../frontend/web/local']];
