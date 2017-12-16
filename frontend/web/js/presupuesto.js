@@ -1,29 +1,35 @@
     $(function() {
         titulo_detalle();
-        /*var id_solicitud = document.getElementById('solicitud-id_solicitud').value;
+        var numerod = document.getElementById('presupuesto-numerod').value;
         var tabla = trae('listado_detalle');
         var i;
-
-        if (id_solicitud>0) {
-            $.get('../solicitud/buscar-detalle',{codigo : id_solicitud},function(data){
+            
+        if (numerod!="") {
+            $.get('../presupuesto/buscar-detalle',{numerod : numerod},function(data){
                 var data = $.parseJSON(data);
                 var campos = Array();
                 if (data!="") {
                     for (i = 0; i < data.length; i++) {
-                        campos.push(i+1);
-                        campos.push(data[i].codigo);
-                        campos.push(data[i].nombre);
-                        campos.push(data[i].cantidad);
-                        campos.push(data[i].costo);
-                        campos.push(data[i].impuesto);
-                        campos.push(data[i].total);
-                        tabla.appendChild(add_filas(campos, 'td','editar_detalle####borrar_detalle','',7));
+                        campos.push(data[i].NroLinea);
+                        campos.push(data[i].CodItem);
+                        if (data[i].Descrip2==null) data[i].Descrip2='';
+                        if (data[i].Descrip3==null) data[i].Descrip3='';
+                        if (data[i].Costo==0) data[i].Costo=data[i].Precio;
+                        campos.push(data[i].Descrip1+data[i].Descrip2+data[i].Descrip3);
+                        campos.push(parseInt(data[i].Cantidad));
+                        campos.push(data[i].Costo);
+                        campos.push(data[i].MtoTax);
+                        campos.push(0);
+                        campos.push(data[i].TotalItem);
+                        campos.push(1);
+                        campos.push('');
+                        tabla.appendChild(add_filas(campos, 'td','editar_detalle####borrar_detalle','',9));
                     }
                 }
 
                 recorre_tabla();
             });
-        }*/
+        }
     });
     
     function titulo_detalle() {

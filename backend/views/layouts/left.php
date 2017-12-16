@@ -16,16 +16,13 @@
                                     ['label' => 'Activar Usuario', 'icon' => 'check', 'url' => ['../../backend/web/site/activar']],
                                     ['label' => 'Cambiar Clave', 'icon' => 'check', 'url' => ['../../backend/web/site/cambiar']],
                             ],];
+            $menuItems[] = ['label' => 'Canon', 'icon' => 'unlock', 'url' => ['../../frontend/web/correl/update?id=1']];
             $menuItems[] = ['label' => 'Pisos', 'icon' => 'folder', 'url' => ['../../frontend/web/piso']];
             $menuItems[] = ['label' => 'Ubicaciones', 'icon' => 'gear', 'url' => ['../../frontend/web/ubicacion']];
-            $menuItems[] = ['label' => 'Alicuota', 'icon' => 'star', 'url' => ['../../frontend/web/alicuota']];
+            $menuItems[] = ['label' => 'Local', 'icon' => 'star', 'url' => ['../../frontend/web/local']];
             $menuItems[] = ['label' => 'Presupuesto', 'icon' => 'clock-o', 'url' => ['../../frontend/web/presupuesto']];
             $menuItems[] = ['label' => 'Condominio', 'icon' => 'folder-o', 'url' => ['../../frontend/web/presupuesto/procesar']];
-            $menuItems[] = ['label' => 'Reportes', 'icon' => 'book', 'url' => '#',
-                                'items' => [
-                                    ['label' => 'Ordenes', 'icon' => 'check', 'url' => ['../../frontend/web/vw-resumen-orden/reporte-ordenes']],
-                                    ['label' => 'Consulta de Orden', 'icon' => 'check', 'url' => ['../../frontend/web/transaccion/consulta-estatus']],
-                            ],];
+            $menuItems[] = ['label' => 'Arrendamiento', 'icon' => 'lock', 'url' => ['../../frontend/web/presupuesto/arrendamiento']];
         }
     ?>
         <?= dmstr\widgets\Menu::widget(

@@ -122,8 +122,8 @@ class Presupuesto extends \yii\db\ActiveRecord
     {
         return [
             [['CodSucu', 'TipoFac', 'NumeroD','CodVend'], 'required'],
-            [['CodSucu', 'TipoFac', 'NumeroD', 'NroCtrol', 'CodEsta', 'CodUsua', 'CodConv', 'OTipo', 'ONumero', 'NumeroC', 'NumeroT', 'NumeroR', 'AutSRI', 'NroEstable', 'PtoEmision', 'NumeroF', 'NumeroNCF', 'NumeroP', 'NumeroE', 'NumeroZ', 'Moneda', 'CodClie', 'CodVend', 'CodUbic', 'Descrip', 'Direc1', 'Direc2', 'Direc3', 'ZipCode', 'Telef', 'ID3', 'DetalChq', 'OrdenC', 'CodOper', 'Notas1', 'Notas2', 'Notas3', 'Notas4', 'Notas5', 'Notas6', 'Notas7', 'Notas8', 'Notas9', 'Notas10'], 'string'],
-            [['EsCorrel', 'Signo', 'TipoTraE', 'NGiros', 'NMeses','CodVend'], 'integer'],
+            [['CodSucu', 'TipoFac', 'NumeroD', 'NroCtrol', 'CodEsta', 'CodUsua', 'CodConv', 'OTipo', 'ONumero', 'NumeroC', 'NumeroT', 'NumeroR', 'AutSRI', 'NroEstable', 'PtoEmision', 'NumeroF', 'NumeroNCF', 'NumeroP', 'NumeroE', 'NumeroZ', 'Moneda', 'CodClie', 'CodVend', 'CodUbic', 'Descrip', 'Direc1', 'Direc2', 'Direc3', 'ZipCode', 'Telef', 'ID3', 'DetalChq', 'OrdenC', 'CodOper', 'Notas1', 'Notas2', 'Notas3', 'Notas4', 'Notas5', 'Notas6', 'Notas7', 'Notas8', 'Notas9', 'Notas10','CodVend'], 'string'],
+            [['EsCorrel', 'Signo', 'TipoTraE', 'NGiros', 'NMeses'], 'integer'],
             [['FechaT', 'FechaR', 'FechaI', 'FechaE', 'FechaV'], 'safe'],
             [['Factor', 'MontoMEx', 'Monto', 'MtoTax', 'Fletes', 'TGravable', 'TGravable0', 'TExento', 'CostoPrd', 'CostoSrv', 'DesctoP', 'RetenIVA', 'MtoTotal', 'Contado', 'Credito', 'CancelI', 'CancelA', 'CancelE', 'CancelC', 'CancelT', 'CancelG', 'CancelP', 'Cambio', 'MtoExtra', 'ValorPtos', 'Descto1', 'PctAnual', 'MtoInt1', 'Descto2', 'PctManejo', 'MtoInt2', 'SaldoAct', 'MtoPagos', 'MtoNCredito', 'MtoNDebito', 'MtoFinanc', 'TotalPrd', 'TotalSrv', 'MtoComiVta', 'MtoComiCob', 'MtoComiVtaD', 'MtoComiCobD'], 'number'],
         ];

@@ -135,7 +135,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) {
                     if ($action === 'update') {
-                        $url = Yii::$app->urlManager->createUrl(['presupuesto/update?numerod='.$model->NumeroD]); // your own url generation logic
+                        $url = Yii::$app->urlManager->createUrl(['presupuesto/update?NumeroD='.$model->NumeroD.'&CodSucu='.$model->CodSucu.'&TipoFac='.$model->TipoFac]); // your own url generation logic
                         return $url;
                     } else {
                         $url = Yii::$app->urlManager->createUrl(['presupuesto/imprime-presupuesto?numerod='.$model->NumeroD]); // your own url generation logic

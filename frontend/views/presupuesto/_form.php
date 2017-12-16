@@ -14,7 +14,7 @@ use frontend\models\Sadepo;
 /* @var $model frontend\models\Presupuesto */
 /* @var $form yii\widgets\ActiveForm */
 $this->registerJsFile('@web/general.js');
-$this->registerJsFile('@web/presupuesto.js');
+$this->registerJsFile('@web/js/presupuesto.js');
 $this->registerCssFile('@web/css/general.css');
 $id_usuario = Yii::$app->user->identity->id_usuario;
 date_default_timezone_set("America/Caracas");
@@ -113,26 +113,6 @@ $fecha=date('d-m-Y',$fecha);
                     <td align="right">Nota 5</td>
                     <td><input id="presupuesto-notas5" name="Presupuesto[Notas5]" maxlength="60" class="texto texto-el" /></td>
                 </tr> 
-                <tr>
-                    <td align="right">Nota 6</td>
-                    <td><input id="presupuesto-notas6" name="Presupuesto[Notas6]" maxlength="60" class="texto texto-el" /></td>
-                </tr> 
-                <tr>
-                    <td align="right">Nota 7</td>
-                    <td><input id="presupuesto-notas7" name="Presupuesto[Notas7]" maxlength="60" class="texto texto-el" /></td>
-                </tr> 
-                <tr>
-                    <td align="right">Nota 8</td>
-                    <td><input id="presupuesto-notas8" name="Presupuesto[Notas8]" maxlength="60" class="texto texto-el" /></td>
-                </tr> 
-                <tr>
-                    <td align="right">Nota 9</td>
-                    <td><input id="presupuesto-notas9" name="Presupuesto[Notas9]" maxlength="60" class="texto texto-el" /></td>
-                </tr> 
-                <tr>
-                    <td align="right">Nota 10</td>
-                    <td><input id="presupuesto-notas10" name="Presupuesto[Notas10]" maxlength="100" class="texto texto-el" /></td>
-                </tr> 
             </table>';
 ?>
 
@@ -140,9 +120,9 @@ $fecha=date('d-m-Y',$fecha);
 
     <div class="form-group">
         <?= Html::submitButton("Actualizar Presupuesto",array('class'=>'btn btn-success','onclick'=>'js:enviar_data();')); ?>
-        <?php // Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
     <?php $form = ActiveForm::begin(); ?>
+    <?php //Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     <input type="hidden" id='i_items' name='i_items' />
     <?= $form->field($model, "id_usuario")->hiddenInput(['value'=> $id_usuario])->label(false); ?>
     <div class="inicial_em1">
@@ -160,7 +140,7 @@ $fecha=date('d-m-Y',$fecha);
                     ?>
                 </td>
                 <td>
-                    <input type="text" readonly id="presupuesto-descrip" class="texto texto-largo" />
+                    <?= $form->field($model, 'Descrip')->TextInput(['class' => 'texto texto-largo', 'readonly' => true])->label(false); ?>
                 </td>
             </tr>
             <tr>
@@ -200,7 +180,7 @@ $fecha=date('d-m-Y',$fecha);
         <table class="tabla-decorada" style="width:25em">
             <tr>
                 <td align="right"><b>Documento</b></td>
-                <td><input readonly id="presupuesto-numerod" class="texto texto-corto" /></td>
+                <td><?= $form->field($model, 'NumeroD')->TextInput(['class' => 'texto texto-corto', 'readonly' => true])->label(false); ?></td>
             </tr>
             <tr>
                 <td align="right"><b>Descuento</b></td>

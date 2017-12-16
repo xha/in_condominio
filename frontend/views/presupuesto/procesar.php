@@ -13,7 +13,7 @@ use frontend\models\Sadepo;
 /* @var $model frontend\models\Presupuesto */
 /* @var $form yii\widgets\ActiveForm */
     $this->registerJsFile('@web/general.js');
-    $this->registerJsFile('@web/procesar.js');
+    $this->registerJsFile('@web/js/procesar.js');
     $this->registerCssFile('@web/css/general.css');
     $id_usuario = Yii::$app->user->identity->id_usuario;
     $this->title = 'Procesar Condominios';

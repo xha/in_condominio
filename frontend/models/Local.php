@@ -41,7 +41,7 @@ class Local extends \yii\db\ActiveRecord
             [['id_ubicacion', 'id_piso', 'alquiler', 'tipo_alquiler', 'activo'], 'integer'],
             [['porcentaje', 'porcentaje_alquiler'], 'number', 'max' => 100],
             [['monto_alquiler'], 'number'],
-            [['metro'], 'number', 'min' => 1],
+            [['metro'], 'number', 'min' => 1, 'max' => 999],
             [['CodClie'], 'exist', 'skipOnError' => true, 'targetClass' => Saclie::className(), 'targetAttribute' => ['CodClie' => 'CodClie']],
             [['id_ubicacion'], 'exist', 'skipOnError' => true, 'targetClass' => Ubicacion::className(), 'targetAttribute' => ['id_ubicacion' => 'id_ubicacion']],
             [['id_piso'], 'exist', 'skipOnError' => true, 'targetClass' => Piso::className(), 'targetAttribute' => ['id_piso' => 'id_piso']],
@@ -63,7 +63,7 @@ class Local extends \yii\db\ActiveRecord
             'porcentaje' => 'Porcentaje',
             'alquiler' => '¿Tiene Arrendamiento?',
             'tipo_alquiler' => 'Tipo de Arrendamiento',
-            'monto_alquiler' => 'Monto de Arrendamiento',
+            'monto_alquiler' => 'Monto de Arrendamiento (o porcentaje según Cánon)',
             'porcentaje_alquiler' => 'Porcentaje de Arrendamiento mixto',
             'activo' => 'Activo',
         ];
