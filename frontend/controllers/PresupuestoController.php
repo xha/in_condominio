@@ -115,7 +115,7 @@ class PresupuestoController extends Controller
             //20170801 22:11:00
             $model->FechaV = $model->FechaE;
             $model->FechaI = $model->FechaE;
-            $model->CodEsta = gethostname();
+            $model->CodEsta = substr(gethostname(),0,9) ;
             $msg = "";
             /*************************************************************************************************/
             //BUSCO EL CORRELATIVO QUE SIGUE DE PRESUPUESTO
