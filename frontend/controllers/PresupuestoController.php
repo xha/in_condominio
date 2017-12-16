@@ -414,7 +414,7 @@ class PresupuestoController extends Controller
         $query = "SELECT * from SAFACT where TipoFac='F' and NumeroD='".$numerod."' 
                     and NOT EXISTS (SELECT *
                    FROM   ISCO_PRESUPUESTOS 
-                   WHERE  SAFACT.NumeroD = ISCO_PRESUPUESTOS.NumeroD) and Notas10=NULL";
+                   WHERE  SAFACT.NumeroD = ISCO_PRESUPUESTOS.NumeroD) and Notas10 is NULL";
         $pendientes = $connection->createCommand($query)->queryAll();
         //$pendientes = $comand->readAll();
         echo Json::encode($pendientes);
