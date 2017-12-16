@@ -37,7 +37,7 @@ class PresupuestoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PresupuestoSearch( [ 'TipoFac' => 'F', 'Notas10' => 1 ]);
+        $searchModel = new PresupuestoSearch( [ 'TipoFac' => 'F', 'Notas9' => 1 ]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->sort = ['defaultOrder' => ['NumeroD'=>SORT_DESC, 'FechaE'=>SORT_ASC]];
 
