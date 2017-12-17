@@ -226,6 +226,7 @@ class PresupuestoController extends Controller
      */
     public function actionUpdate($CodSucu, $NumeroD, $TipoFac)
     {
+
         $model = $this->findModel($CodSucu, $NumeroD, $TipoFac);
         $connection = \Yii::$app->db;
         $data = array();
