@@ -36,8 +36,8 @@ class Local extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['CodClie','id_ubicacion', 'id_piso', 'descripcion', 'metro'], 'required'],
-            [['CodClie', 'descripcion'], 'string'],
+            [['CodClie','id_ubicacion', 'id_piso', 'descripcion', 'metro', 'CodVend'], 'required'],
+            [['descripcion'], 'string'],
             [['id_ubicacion', 'id_piso', 'alquiler', 'tipo_alquiler', 'activo'], 'integer'],
             [['porcentaje', 'porcentaje_alquiler'], 'number', 'max' => 100],
             [['monto_alquiler'], 'number'],
@@ -66,6 +66,7 @@ class Local extends \yii\db\ActiveRecord
             'monto_alquiler' => 'Monto de Arrendamiento (o porcentaje según Cánon)',
             'porcentaje_alquiler' => 'Porcentaje de Arrendamiento mixto',
             'activo' => 'Activo',
+            'CodVend' => 'Centro Comercial',
         ];
     }
 
@@ -75,6 +76,11 @@ class Local extends \yii\db\ActiveRecord
     public function getCodClies()
     {
         return $this->hasOne(Saclie::className(), ['CodClie' => 'CodClie']);
+    }
+    
+    public function getCodVends()
+    {
+        return $this->hasOne(Ccomercial::className(), ['CodVend' => 'CodVend']);
     }
 
     /**

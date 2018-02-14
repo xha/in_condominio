@@ -13,7 +13,8 @@ use backend\models\Sadepo;
 $this->title = 'Activar usuario';
 
 $this->params['breadcrumbs'][] = $this->title;
-
+$this->registerJsFile('@web/general.js');
+$this->registerCssFile('@web/css/general.css');
 ?>
 
 <h3><?= $msg ?></h3>
@@ -35,6 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?= $form->field($model, 'CodUbic')->dropDownList(ArrayHelper::map(Sadepo::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodUbic', 'CodUbic', 'Descrip')); ?>
 
+
+    <?= $form->field($model, 'reseteo')->checkbox(); ?><br /><br />
+
     <?= $form->field($model, 'activado')->checkbox(); ?><br /><br />
 
     <div class="form-group">
@@ -42,4 +46,50 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>    
 
     <?php ActiveForm::end(); ?>
+    
+    <table class="tablas inicial00" id="listado_detalle"></table>
 </div>
+<script type="text/javascript">
+    $(function() {
+        buscar_usuarios();
+    });
+    
+    function titulo_usuario() {
+        var arreglo = new Array();
+            arreglo[0] = 'Usuario';
+            arreglo[1] = 'Cédula';
+            arreglo[2] = 'Nombre';
+            arreglo[3] = 'Ubicación';
+            arreglo[4] = 'Rol';
+            arreglo[5] = 'Estatus';
+
+        var tabla = document.getElementById('listado_detalle');
+            tabla.innerHTML = "";
+
+        tabla.appendChild(add_filas(arreglo, 'th','','',5));
+    }
+    
+    function buscar_usuarios() {
+        var tabla = trae('listado_detalle');
+        var i;
+        
+        tabla.innerHTML = "";
+        $.getJSON('../site/busca-usuarios',{},function(data){
+            var campos = Array();
+            if (data!="") {
+                titulo_usuario();
+                for (i = 0; i < data.length; i++) {
+                    campos.length = 0;
+                    campos.push(data[i].usuario);
+                    campos.push(data[i].cedula);
+                    campos.push(data[i].nombre);
+                    campos.push(data[i].ubicacion);
+                    campos.push(data[i].rol);
+                    campos.push(data[i].activo);
+
+                    tabla.appendChild(add_filas(campos, 'td','','',5));
+                }
+            }
+        });
+    }
+</script>

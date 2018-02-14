@@ -20,7 +20,7 @@ class Pregunta extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'isco_pregunta';
+        return 'ISCO_pregunta';
     }
 
     /**

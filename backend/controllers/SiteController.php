@@ -195,7 +195,7 @@ class SiteController extends Controller
                 
                 $connection = \Yii::$app->db;
 
-                $query = "UPDATE isco_usuario
+                $query = "UPDATE ISCO_usuario
                 SET clave='".$table->clave."'
                 OUTPUT INSERTED.clave
                 where id_usuario='".$table->id_usuario."' and clave='".$table->clave_actual."'";
@@ -241,7 +241,7 @@ class SiteController extends Controller
             $clave = md5("is".$model->clave);
             $connection = \Yii::$app->db;
 
-            $query = "UPDATE isco_usuario
+            $query = "UPDATE ISCO_usuario
             SET clave='$clave'
             where usuario='".$model->usuario."' and id_pregunta=".$model->id_pregunta." and respuesta_seguridad='".$model->respuesta_seguridad."' and correo='".$model->correo."'";
             $msg = $connection->createCommand($query)->execute();
@@ -266,7 +266,7 @@ class SiteController extends Controller
         $msg = null;
         $data = array();
         
-        $query = "SELECT usuario FROM isco_USUARIO";
+        $query = "SELECT usuario FROM ISCO_USUARIO";
         $data1 = $connection->createCommand($query)->queryAll();
 
         for($i=0;$i<count($data1);$i++) {
@@ -274,9 +274,16 @@ class SiteController extends Controller
         }
         
         if ($model->load(Yii::$app->request->post())) {
-            $query = "UPDATE isco_USUARIO
-            SET id_rol=".$model->id_rol.", CodUbic='".$model->CodUbic."', activo=".$model->activado."
+            $extra="";
+            if ($model->reseteo==1) {
+                $extra = md5("is123456");
+                $extra = ",clave='".$extra."'";
+            }
+
+            $query = "UPDATE ISCO_USUARIO
+            SET id_rol=".$model->id_rol.", CodUbic='".$model->CodUbic."', activo=".$model->activado." $extra
             where usuario='".$model->usuario."'";
+            
             $msg = $connection->createCommand($query)->execute();
             
             if ($msg > 0) {
@@ -291,5 +298,18 @@ class SiteController extends Controller
             'msg' => $msg,
             'data' => $data
         ]);
+    }
+    
+    public function actionBuscaUsuarios() {
+        $connection = \Yii::$app->db;
+        
+        $query = "select u.usuario, u.cedula, CONCAT(u.apellido,', ',u.nombre) as nombre,d.Descrip as ubicacion, r.descripcion as rol, u.activo
+            from ISCO_Usuario u, SADEPO d, ISCO_Rol r
+            WHERE u.CodUbic=d.CodUbic and r.id_rol=u.id_rol
+            ORDER BY ubicacion,nombre";
+
+        $pendientes = $connection->createCommand($query)->queryAll();
+        //$pendientes = $comand->readAll();
+        echo Json::encode($pendientes);
     }
 }

@@ -21,7 +21,7 @@ class Accion extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'isco_accion';
+        return 'ISCO_accion';
     }
 
     /**

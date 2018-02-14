@@ -20,6 +20,7 @@ class LocalSearch extends Local
         return [
             [['id_alicuota', 'id_ubicacion', 'id_piso', 'alquiler', 'activo', 'tipo_alquiler'], 'integer'],
             [['CodClie', 'descripcion'], 'safe'],
+            [['CodVend'], 'string'],
             [['porcentaje','metro', 'monto_alquiler', 'porcentaje_alquiler'], 'number'],
         ];
     }

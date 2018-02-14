@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
               'value'=>'codUbic.Descrip',
             ],
             // 'Clase',
-            // 'Direc1',
+            'Direc1',
             // 'Direc2',
             // 'Telef',
             // 'Movil',
@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'EsComiDT',
             // 'EsComiUT',
             // 'EsComiTM',
-            'Activo',
+            //'Activo',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -60,14 +60,14 @@ class Ccomercial extends \yii\db\ActiveRecord
     {
         return [
             'CodVend' => 'Código',
-            'Descrip' => 'Descripción',
+            'Descrip' => 'Nombre',
             'TipoID3' => 'Tipo Id3',
             'TipoID' => 'Tipo ID',
             'ID3' => 'Id3',
             'DescOrder' => 'Localidad',
             'Clase' => 'Clase',
-            'Direc1' => 'Direción 1',
-            'Direc2' => 'Direción 2',
+            'Direc1' => 'Dirección',
+            'Direc2' => 'Dirección 2',
             'Telef' => 'Teléfono',
             'Movil' => 'Teléfono Movil',
             'Email' => 'Email',
