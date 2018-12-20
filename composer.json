@@ -27,6 +27,8 @@
         "itbz/fpdf": "dev-master",
         "dmstr/yii2-adminlte-asset": "2.*",
         "kartik-v/yii2-tabs-x": "@dev",
+        "miloschuman/yii2-highcharts-widget": "*",
+        "edwinhaq/yii2-simple-loading": "*",
         "ercling/yii2-pace": "master@dev"
     },
     "require-dev": {
