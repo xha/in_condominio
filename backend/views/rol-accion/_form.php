@@ -6,11 +6,9 @@ use yii\helpers\ArrayHelper;
 use backend\models\Accion;
 use backend\models\Rol;
 
-$this->registerJsFile('@web/general.js');
 $this->registerJsFile('@web/js/rol-accion.js');
-$this->registerCssFile('@web/css/general.css');
 ?>
-
+<?= ercling\pace\PaceWidget::widget(); ?>
 <div class="rol-accion-form" style="min-height: 800px">
 
     <div class="form-group">

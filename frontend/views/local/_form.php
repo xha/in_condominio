@@ -16,38 +16,35 @@ $this->registerJsFile('@web/general.js');
 $this->registerJsFile('@web/js/local.js');
 $this->registerCssFile('@web/css/general.css');
 ?>
-
+<?= ercling\pace\PaceWidget::widget(); ?>
 <div class="local-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    
-    <label class="control-label">Cánon: </label>
-    <?php
-         $canon = Yii::$app->db->createCommand("SELECT top(1) canon FROM ISCO_Correl")->queryOne();
-         echo "<input readonly='true' class='texto texto-ec' name='canon' id='canon' value='".$canon['canon']."'> Bs.<br /><br />" ;
-    ?>
-    
-    <label class="control-label">Cliente</label>
-    <?= Html::activeDropDownList($model, 'CodClie',
-      ArrayHelper::map(Saclie::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodClie', 'Descrip'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>
 
-    <label class="control-label">Centro Comercial</label>
-    <?= Html::activeDropDownList($model, 'CodVend',
-      ArrayHelper::map(Ccomercial::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodVend', 'Descrip'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>
-    
-    <label class="control-label">Ubicación</label>
-    <?= Html::activeDropDownList($model, 'id_ubicacion',
-      ArrayHelper::map(Ubicacion::find()->where(['activo' => '1'])->OrderBy('nombre')->all(), 'id_ubicacion', 'nombre'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>
+    <center>
+        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-save"></i> Crear' : '<i class="fa fa-save"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </center>
 
-    <label class="control-label">Piso</label>
-    <?= Html::activeDropDownList($model, 'id_piso',
-      ArrayHelper::map(Piso::find()->where(['activo' => '1'])->OrderBy('nombre')->all(), 'id_piso', 'nombre'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>
+    <div class="row">
+        <label class="control-label">Canon:</label>
+        <input id='canon' name='canon' value="<?= $canon ?>" class="texto texto-ec" readonly />
+    </div>
+    
+    <?= $form->field($model, 'CodClie')->dropDownList(ArrayHelper::map(Saclie::find()->where(['Activo' => '1'])->OrderBy('Descrip')->all(), 'CodClie', 'Descrip'), ['prompt'=>'Seleccione']); ?>
+
+    <?= $form->field($model, 'CodVend')->dropDownList(ArrayHelper::map(Ccomercial::find()->where(['Activo' => '1'])->OrderBy('Descrip')->all(), 'CodVend', 'Descrip'), ['prompt'=>'Seleccione', 'onchange'=>'js:busca_canon();']); ?>
+
+    <?= $form->field($model, 'id_ubicacion')->dropDownList(ArrayHelper::map(Ubicacion::find()->where(['activo' => '1'])->OrderBy('nombre')->all(), 'id_ubicacion', 'nombre'), ['prompt'=>'Seleccione']); ?>
+
+    <?= $form->field($model, 'id_piso')->dropDownList(ArrayHelper::map(Piso::find()->where(['activo' => '1'])->OrderBy('nombre')->all(), 'id_piso', 'nombre'), ['prompt'=>'Seleccione']); ?>
 
     <?= $form->field($model, 'descripcion')->textInput() ?>
 
     <?= $form->field($model, 'metro')->textInput() ?>
     
-    <?= $form->field($model, 'porcentaje')->hiddenInput(['value' => 0])->label(false) ?>
+    <?= $form->field($model, 'porcentaje_alicuota')->hiddenInput(['value' => 0])->label(false) ?>
+
+    <?= $form->field($model, 'monto_alicuota')->hiddenInput(['value' => 0])->label(false) ?>
 
     <?= $form->field($model, 'alquiler')->dropDownList(['0' => 'NO', '1' => 'SI']); ?>
     
@@ -58,10 +55,6 @@ $this->registerCssFile('@web/css/general.css');
     <?= $form->field($model, 'porcentaje_alquiler')->textInput(); ?>
 
     <?= $form->field($model, 'activo')->dropDownList(['1' => 'SI', '0' => 'NO']); ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
 
     <?php ActiveForm::end(); ?>
 

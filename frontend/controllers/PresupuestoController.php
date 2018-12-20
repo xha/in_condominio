@@ -263,8 +263,9 @@ class PresupuestoController extends Controller
                 /*************************************************************************************************/
                 $detalle = explode("¬",$_POST['i_items']);  
                 $query = "DELETE FROM SAITEMFAC WHERE TipoFac='F' and NumeroD='".$model->NumeroD."'";
+                $query = "DELETE FROM SATAXITF WHERE TipoFac='F' and NumeroD='".$model->NumeroD."'";
                 $connection->createCommand($query)->query();
-                for ($i=0;$i < count($detalle) - 1;$i++) {
+                for ($i=0; $i < (count($detalle) - 2); $i++) {
                     $campos = explode("#",$detalle[$i]);
                     //Nro   Código  Descripción     Cantidad    Precio  Tax     Descuento   Total   Serv CodTax
                     if ($campos[5]>0) {
@@ -278,7 +279,7 @@ class PresupuestoController extends Controller
                         $monto_tax = $satax['MtoTax'];
 
                         $query2 = "INSERT INTO SATAXITF(CodSucu,TipoFac,NumeroD,NroLinea,NroLineaC,CodTaxs,CodItem,Monto,TGravable,MtoTax) 
-                                VALUES ('".$model->CodSucu."','F',".$model->NumeroD.",".($i+1).",0,'".$campos[9]."','".$campos[1]."',".$campos[5].",".$campos[7].",".$monto_tax.")";
+                                VALUES ('".$model->CodSucu."','F','".$model->NumeroD."',".($i+1).",0,'".$campos[9]."','".$campos[1]."',".$campos[5].",".$campos[7].",".$monto_tax.")";
                         $connection->createCommand($query2)->query();
                     } else {
                         $grav = 0;
@@ -366,7 +367,7 @@ class PresupuestoController extends Controller
             ORDER BY Descrip desc";
 
         $pendientes = $connection->createCommand($query)->queryAll();
-        echo Json::encode($pendientes);
+        return Json::encode($pendientes);
     }
 
     public function actionBuscarItems($codigo,$tipo) {
@@ -383,7 +384,7 @@ class PresupuestoController extends Controller
         }
         $pendientes = $connection->createCommand($query)->queryAll();
         //$pendientes = $comand->readAll();
-        echo Json::encode($pendientes);
+        return Json::encode($pendientes);
     }    
 
     public function actionBuscarImpuestos($codigo,$tipo) {
@@ -401,7 +402,7 @@ class PresupuestoController extends Controller
 
         $pendientes = $connection->createCommand($query)->queryAll();
         //$pendientes = $comand->readAll();
-        echo Json::encode($pendientes);
+        return Json::encode($pendientes);
     }  
 
     public function actionBuscarEncabezado($numerod) {
@@ -417,16 +418,19 @@ class PresupuestoController extends Controller
                    WHERE  SAFACT.NumeroD = ISCO_PRESUPUESTOS.NumeroD) and Notas10 is NULL";
         $pendientes = $connection->createCommand($query)->queryAll();
         //$pendientes = $comand->readAll();
-        echo Json::encode($pendientes);
+        return Json::encode($pendientes);
     }  
 
     public function actionBuscarDetalle($numerod) {
         $connection = \Yii::$app->db;
 
-        $query = "SELECT * from SAITEMFAC where TipoFac='F' and NumeroD='".$numerod."' Order By NroLinea";
+        $query = "SELECT *,s.CodTaxs  
+            from SAITEMFAC i
+            left join SATAXSRV s on i.CodItem=s.CodServ
+            where TipoFac='F' and NumeroD='".$numerod."' Order By NroLinea";
         $pendientes = $connection->createCommand($query)->queryAll();
         //$pendientes = $comand->readAll();
-        echo Json::encode($pendientes);
+        return Json::encode($pendientes);
     }  
 
     public function actionBuscaProcesarCondominio($numerod,$usuario) {
@@ -436,17 +440,17 @@ class PresupuestoController extends Controller
 
         $pendientes = $connection->createCommand($query)->queryAll();
         //$pendientes = $comand->readAll();
-        echo Json::encode($pendientes);
+        return Json::encode($pendientes);
     }  
     
-    public function actionBuscaProcesarArrendamiento($mes,$usuario) {
+    public function actionBuscaProcesarArrendamiento($mes,$usuario,$codvend) {
         $connection = \Yii::$app->db;
         $CodEsta = substr(gethostname(),0,9) ;
         $CodUbic = Yii::$app->user->identity->CodUbic;
-        $query = "SET ANSI_NULLS ON; SET ANSI_WARNINGS ON; SET NOCOUNT ON; EXEC ISCO_ARRENDAMIENTO '".$mes."','".$CodEsta."','".$CodUbic."','".$usuario."'";
+        $query = "SET ANSI_NULLS ON; SET ANSI_WARNINGS ON; SET NOCOUNT ON; EXEC ISCO_ARRENDAMIENTO '".$mes."','".$CodEsta."','".$CodUbic."','".$codvend."','".$usuario."'";
 
         $pendientes = $connection->createCommand($query)->queryOne();
         //$pendientes = $comand->readAll();
-        echo Json::encode($pendientes);
+        return Json::encode($pendientes);
     }  
 }

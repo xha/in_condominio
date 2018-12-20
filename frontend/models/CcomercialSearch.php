@@ -18,7 +18,7 @@ class CcomercialSearch extends Ccomercial
     public function rules()
     {
         return [
-            [['CodVend', 'Descrip', 'ID3', 'Clase', 'Direc1', 'Direc2', 'Telef', 'Movil', 'Email', 'FechaUV', 'FechaUC'], 'safe'],
+            [['CodVend', 'Descrip', 'ID3', 'Clase', 'DescOrder', 'Direc1', 'Direc2', 'Telef', 'Movil', 'Email', 'FechaUV', 'FechaUC'], 'safe'],
             [['TipoID3', 'TipoID', 'EsComiPV', 'EsComiTV', 'EsComiTC', 'EsComiTU', 'EsComiDT', 'EsComiUT', 'EsComiTM', 'Activo'], 'integer'],
         ];
     }

@@ -13,8 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="correl-view">
 
     <p>
-        <?= Html::a('Actualizar', ['update', 'id' => $model->id_correl], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Desactivar', ['delete', 'id' => $model->id_correl], [
+        <?= Html::a('<i class="fa fa-save"></i> Actualizar', ['update', 'id' => $model->id_correl], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="fa fa-close"></i> Desactivar', ['delete', 'id' => $model->id_correl], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Confirmar Desactivado',
@@ -27,7 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id_correl',
+            'CodVend',
             'canon',
+            'activo:boolean',
         ],
     ]) ?>
 

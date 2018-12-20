@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
+use yii\helpers\Json;
 
 /**
  * AccionController implements the CRUD actions for Accion model.
@@ -134,5 +135,16 @@ class AccionController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /********************************************** BUSQUEDAS ********************************************************************************/
+    public function actionBuscarPadre($nivel) {
+        $connection = \Yii::$app->db;
+        $query = "SELECT *
+                FROM ISCO_Accion
+                WHERE nivel=$nivel and activo=1
+                ORDER BY descripcion asc";
+        $pendientes = $connection->createCommand($query)->queryAll();
+        return Json::encode($pendientes);
     }
 }

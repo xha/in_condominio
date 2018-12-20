@@ -10,7 +10,7 @@ use backend\models\Rol;
 /* @var $model app\models\Usuario */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?= ercling\pace\PaceWidget::widget(); ?>
 <div class="usuario-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -54,3 +54,6 @@ use backend\models\Rol;
     <?php ActiveForm::end(); ?>
 
 </div>
+<script type="text/javascript">
+    $(document).ajaxStart(function() { Pace.restart(); });
+</script>

@@ -1,3 +1,4 @@
+$(document).ajaxStart(function() { Pace.restart(); });
     function enviar_data() {
         var i_items = document.getElementById('i_items');
         var impuesto = Math.round(parseFloat(trae('impuesto').value) * 100) / 100 ;

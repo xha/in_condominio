@@ -15,9 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Crear Acción', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <center>
+        <?= Html::a('<i class="fa fa-file"></i> Crear Acción', ['create'], ['class' => 'btn btn-success']) ?>
+    </center>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -29,6 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id_accion',
             'descripcion',
+            'alias',
+            'nivel',
+            'id_padre',
             'activo:boolean',
 
             ['class' => 'yii\grid\ActionColumn'],

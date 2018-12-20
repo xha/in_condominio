@@ -9,13 +9,13 @@ use frontend\models\Sadepo;
 /* @var $model frontend\models\Ccomercial */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?= ercling\pace\PaceWidget::widget(); ?>
 <div class="ccomercial-form">
 
     <?php $form = ActiveForm::begin(); ?>
     
     <center class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-save"></i> Crear' : '<i class="fa fa-save"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </center>
 
     <?= $form->field($model, 'CodVend')->textInput(['maxlength' => 10]) ?>
@@ -27,21 +27,25 @@ use frontend\models\Sadepo;
     <?= $form->field($model, 'Direc2')->textInput(['maxlength' => 60]) ?>
 
     <div class="col-md-4">
+        <?= $form->field($model, 'Email')->textInput(['maxlength' => 60]) ?>
+    </div>
+
+    <div class="col-md-4">
+        <?= $form->field($model, 'DescOrder')->dropDownList(ArrayHelper::map(Sadepo::find()->where(['Activo' => '1'])->OrderBy('Descrip')->all(), 'CodUbic', 'Descrip', 'CodUbic'), ['prompt' => 'Seleccione']); ?>
+    </div>
+
+    <div class="col-md-4">
         <?= $form->field($model, 'Telef')->textInput(['maxlength' => 15]) ?>
     </div>
+
     <div class="col-md-4">
         <?= $form->field($model, 'Movil')->textInput(['maxlength' => 15]) ?>
-    </div>
-    
-    <div class="col-md-4">
-        <?= $form->field($model, 'Email')->textInput(['maxlength' => 60]) ?>
     </div>
     
     <div class="col-md-4">
         <?= $form->field($model, 'Activo')->dropDownList(['1' => 'SI', '0' => 'NO']); ?>
     </div>
     
-    <?= $form->field($model, 'DescOrder')->hiddenInput(['value'=>Yii::$app->user->identity->CodUbic])->label(false); ?>
     <?= $form->field($model, 'Clase')->hiddenInput(['value'=>'SERIE'])->label(false); ?>
     <?= $form->field($model, 'TipoID3')->hiddenInput(['value'=>0])->label(false); ?>
     <?= $form->field($model, 'TipoID')->hiddenInput(['value'=>0])->label(false); ?>
@@ -59,3 +63,6 @@ use frontend\models\Sadepo;
     <?php ActiveForm::end(); ?>
 
 </div>
+<script type="text/javascript">
+    $(document).ajaxStart(function() { Pace.restart(); });
+</script>

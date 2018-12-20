@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
 use kartik\date\DatePicker;
 use kartik\tabs\TabsX;
-use frontend\models\Savend;
+use frontend\models\Ccomercial;
 use frontend\models\Sadepo;
 
 /* @var $this yii\web\View */
@@ -43,7 +43,7 @@ $fecha=date('d-m-Y',$fecha);
                         <input id="d_nombre" maxlength="120" class="texto texto-largo" readonly />
                     </td> 
                     <td valign="button" rowspan="2">
-                        <button type="button" class="btn btn-primary" id="d_agregar" onclick="valida_detalle()">Actualizar</button>
+                        <button type="button" class="btn btn-primary" id="d_agregar" onclick="valida_detalle()"><i class="fa fa-save"></i> Actualizar</button>
                     </td>
                 </tr>
                 <tr>
@@ -76,7 +76,7 @@ $fecha=date('d-m-Y',$fecha);
                     </td>
                 </tr>
             </table>
-            <table class="tablas inicial00" id="listado_detalle">
+            <table class="table table-striped table-bordered table-hover tables" id="listado_detalle">
                 <tr>
                     <th>Nro</th>
                     <th>Código</th>
@@ -115,18 +115,18 @@ $fecha=date('d-m-Y',$fecha);
                 </tr> 
             </table>';
 ?>
-
+<?= ercling\pace\PaceWidget::widget(); ?>
 <div class="presupuesto-form">
 
-    <div class="form-group">
-        <?= Html::submitButton("Actualizar Presupuesto",array('class'=>'btn btn-success','onclick'=>'js:enviar_data();')); ?>
-    </div>
+    <center>
+        <?= Html::submitButton("<i class='fa fa-save'></i> Actualizar Presupuesto",array('class'=>'btn btn-success','onclick'=>'js:enviar_data();')); ?>
+    </center>
     <?php $form = ActiveForm::begin(); ?>
-    <?php //Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <?php //Html::submitButton($model->isNewRecord ? '<i class="fa fa-save"></i> Crear' : '<i class="fa fa-save"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     <input type="hidden" id='i_items' name='i_items' />
     <?= $form->field($model, "id_usuario")->hiddenInput(['value'=> $id_usuario])->label(false); ?>
-    <div class="inicial_em1">
-        <table class="tabla-decorada" height="202">
+    <div class="container-fluid">
+        <table class="tabla-decorada" height="212">
             <tr>
                 <td align="right"><b>Cliente</b></td>
                 <td valign="top">
@@ -147,7 +147,7 @@ $fecha=date('d-m-Y',$fecha);
                 <td align="right"><b>Vendedor</b></td>
                 <td>
                     <?= Html::activeDropDownList($model, 'CodVend',
-                      ArrayHelper::map(Savend::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodVend', 'Descrip'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>
+                      ArrayHelper::map(Ccomercial::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodVend', 'Descrip'), ['class'=>'form-control','prompt'=>'Seleccione']) ?>
                 </td>
                 <td align="right" rowspan="3">
                     <img src="../../../img/saint.jpg" width="167" />
@@ -211,11 +211,12 @@ $fecha=date('d-m-Y',$fecha);
             <label class='btn btn-primary' onclick='buscar_items()'>Buscar</label>
             <br /><br />
             <div style='max-height: 600px; overflow-y: scroll; width: 100%' >
-                <table id='resultado_producto' class='tablas inicial00' style='width: 98%'></table>
+                <table id='resultado_producto' class='table table-striped table-bordered table-hover tables' style='width: 98%'></table>
             </div>";
 
         Modal::end();
     ?>
+    <br /><br />
     <table>
         <tr>
             <td>
@@ -246,7 +247,7 @@ $fecha=date('d-m-Y',$fecha);
     <?= $form->field($model, 'CodSucu')->hiddenInput(['value'=>'00000'])->label(false); ?>
     <?= $form->field($model, 'TotalPrd')->hiddenInput()->label(false); ?>
     <?= $form->field($model, 'TotalSrv')->hiddenInput()->label(false); ?>
-    <?= $form->field($model, 'CostoPrd')->hiddenInput()->label(false); ?>
+    <?php //$form->field($model, 'CostoPrd')->hiddenInput()->label(false); ?>
     <?= $form->field($model, 'CostoSrv')->hiddenInput()->label(false); ?>
     <?= $form->field($model, 'Monto')->hiddenInput()->label(false); ?>
     <?= $form->field($model, 'MtoTax')->hiddenInput()->label(false); ?>

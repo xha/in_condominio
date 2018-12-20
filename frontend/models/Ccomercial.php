@@ -63,8 +63,8 @@ class Ccomercial extends \yii\db\ActiveRecord
             'Descrip' => 'Nombre',
             'TipoID3' => 'Tipo Id3',
             'TipoID' => 'Tipo ID',
-            'ID3' => 'Id3',
-            'DescOrder' => 'Localidad',
+            'ID3' => 'No. de Serie',
+            'DescOrder' => 'Pertenece',
             'Clase' => 'Clase',
             'Direc1' => 'Dirección',
             'Direc2' => 'Dirección 2',
@@ -84,7 +84,7 @@ class Ccomercial extends \yii\db\ActiveRecord
         ];
     }
     
-    public function getCodUbic()
+    public function getICodUbic()
     {
         return $this->hasOne(Sadepo::className(), ['CodUbic' => 'DescOrder']);
     }

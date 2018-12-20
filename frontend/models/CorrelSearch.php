@@ -18,8 +18,9 @@ class CorrelSearch extends Correl
     public function rules()
     {
         return [
-            [['id_correl'], 'integer'],
-            [['canon'], 'number'],
+            [['id_correl'], 'safe'],
+            [['canon', 'activo'], 'number'],
+            ['CodVend', 'string'],
         ];
     }
 
@@ -61,6 +62,8 @@ class CorrelSearch extends Correl
         $query->andFilterWhere([
             'id_correl' => $this->id_correl,
             'canon' => $this->canon,
+            'CodVend' => $this->CodVend,
+            'activo' => $this->activo,
         ]);
 
         return $dataProvider;

@@ -1,5 +1,4 @@
 CREATE PROCEDURE [dbo].[ISCO_PROCESA_ALICUOTA]
-	WITH ENCRYPTION 
 AS 
 	DECLARE @i_id int, @i_metro numeric(10,2), @i_total_metro numeric(10,2), @i_alicuota numeric(10,2), @salida int
 
@@ -43,7 +42,7 @@ GO
 /**************************/
 CREATE PROCEDURE [dbo].[ISCO_CONDOMINIO]
 	@i_id nvarchar(20),
-	@i_usuario nvarchar(20) WITH ENCRYPTION 
+	@i_usuario nvarchar(20)
 AS 
 	DECLARE @i_numerod varchar(20), @i_codesta varchar(10), @i_codusua varchar(10),
 	@i_codvend varchar(10), @i_codubic varchar(10), @i_descrip varchar(60), @i_codclie varchar(15),
@@ -203,75 +202,89 @@ CREATE PROCEDURE [dbo].[ISCO_ARRENDAMIENTO]
 	@i_mes nvarchar(20),
 	@i_codesta nvarchar(15),
 	@i_codubic nvarchar(15),
-	@i_codusua nvarchar(15) WITH ENCRYPTION 
+	@i_codvend nvarchar(15),
+	@i_codusua nvarchar(15)
 AS 
 	DECLARE @i_codclie varchar(15), @i_monto_alquiler numeric(12,2), @i_descrip varchar(60), 
 	@i_direc1 varchar(60), @i_direc2 varchar(60), @salida int, @prefijo varchar(15), @i_fechae datetime,
-	@c_texento numeric(12,2),@c_tgravable numeric(12,2), @correl varchar(15),
-	@v_descrip varchar(40), @v_precio1 numeric(12,2), @v_codtax varchar(15),
-	@d_tax varchar(15), @d_monto numeric(12,2), @v_monto numeric(12,2), @i int
+	@c_texento numeric(12,2),@c_tgravable numeric(12,2), @correl varchar(15), @v_local varchar(15),
+	@v_descrip varchar(40), @v_precio1 numeric(12,2), @v_codtax varchar(15),@i_impuesto decimal(28,4),
+	@d_tax varchar(15), @d_monto numeric(12,2), @v_monto numeric(12,2), @i int, @contador int, @i_codtax nvarchar(5)
 
 SET @prefijo = CONCAT(@i_mes,YEAR(GETDATE()));
 SET @i_fechae = GETDATE();
 SET @c_texento = 0;
 SET @c_tgravable = 0;
-SET @i = 1;
+SET @i_impuesto=16;
 
 	BEGIN TRY
+		SELECT TOP(1) @i_codtax=CodTaxs,@i_impuesto=MtoTax FROM SATAXES WHERE MtoTax=@i_impuesto;
+		IF (@i_codtax = '')
+		BEGIN
+			INSERT INTO SATAXES(CodTaxs,Descrip,MtoTax,Activo,EsFijo,EsReten,EsPorct,EsCosto,TipoIVA,EsLibroI,EsPartic,EsTaxVenta,EsTaxCompra,MontoMax,Sustraendo,MontoMin) VALUES
+			('IVA16','I.V.A. 16%',16,1,0,0,0,0,0,0,0,0,0,0,0,0);
+
+			SET @i_codtax = 'IVA16';
+			SET @i_impuesto=16;
+		END
+
+		SELECT @contador=COUNT(*) FROM SASERV WHERE CodServ='S00001';
+		IF (@contador = 0)
+		BEGIN
+			INSERT INTO SASERV(CodServ,CodInst,Descrip,Clase,Activo,Precio1,PrecioI1,Precio2,PrecioI2,Precio3,PrecioI3,Costo,EsExento,EsReten,EsPorCost,UsaServ,Comision,EsPorComi,
+			FechaUV,EsImport,EsVenta) VALUES ('S00001',1,'?SERVICIO DE ARRENDAMIENTO','ISCO',1,0,0,0,0,0,0,0,0,0,0,0,0,0,GETDATE(),0,0); 
+
+			INSERT INTO SATAXSRV(CodServ,CodTaxs,Monto,EsPorct) VALUES ('S00001',@i_codtax,@i_impuesto,1);
+		END
+
+		SELECT @i=count(Notas5) FROM SAFACT WHERE TipoFac='F' and Notas6=@i_mes and Notas7='AR';
+		
 		BEGIN TRAN Arrendamiento
 		DECLARE vista_Cursor CURSOR FOR  
-		SELECT a.CodClie,a.monto_alquiler,s.Descrip,s.Direc1,s.Direc2
-			FROM SACLIE s, ISCO_ALICUOTA a
+		SELECT a.id_local,a.CodClie,a.monto_alquiler,s.Descrip,s.Direc1,s.Direc2
+			FROM SACLIE s, ISCO_Local a
 			WHERE s.CodClie=a.CodClie and a.alquiler=1 and a.activo=1 and 
-			a.CodClie NOT IN (SELECT CodClie FROM SAFACT WHERE TipoFac='F' and Notas6=@i_mes and Notas7='AR');  
+			a.id_local NOT IN (SELECT Notas5 FROM SAFACT WHERE TipoFac='F' and Notas6=@i_mes and Notas7='AR');  
 		
 		OPEN vista_Cursor;  
-		FETCH NEXT FROM vista_Cursor into @i_codclie,@i_monto_alquiler,@i_descrip,@i_direc1,@i_direc2
+		FETCH NEXT FROM vista_Cursor into @v_local, @i_codclie,@i_monto_alquiler,@i_descrip,@i_direc1,@i_direc2
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
 		  IF (@i_monto_alquiler>0) 
 		  BEGIN
+			SET @i = @i + 1
 			SET @correl = CONCAT(@prefijo,@i);
 
 			INSERT INTO SAFACT(CodSucu,TipoFac,NumeroD,CodEsta,CodUsua,CodVend,CodUbic,CodClie,Descrip,Direc1,ID3,Monto,MtoTax,TGravable,TExento,CostoPrd,CostoSrv,DesctoP,FechaI,
-					FechaE,FechaV,MtoTotal,Contado,Credito,TotalPrd,TotalSrv,Notas6,Notas7,Factor) VALUES ('00000','F',@correl,@i_codesta,
-					@i_codusua,'001',@i_codubic,@i_codclie,@i_descrip,@i_direc1,@i_codclie,0,0,0,0,0,0,0,@i_fechae,@i_fechae,@i_fechae,0,0,0,0,0,@i_mes,'AR',1);   
+					FechaE,FechaV,MtoTotal,Contado,Credito,TotalPrd,TotalSrv,Notas5,Notas6,Notas7,Factor) VALUES ('00000','F',@correl,@i_codesta,
+					@i_codusua,@i_codvend,@i_codubic,@i_codclie,@i_descrip,@i_direc1,@i_codclie,0,0,0,0,0,0,0,@i_fechae,@i_fechae,@i_fechae,0,0,0,0,0,@v_local,@i_mes,'AR',1);   
 			/****************************************************** SAITEMFAC *********************************************************/
-			DECLARE saserv_Cursor cursor for
-			SELECT s.Descrip,s.Precio1, t.CodTaxs, t.Monto
-				FROM SASERV s
-				LEFT JOIN SATAXSRV t on s.CodServ=t.CodServ
-				WHERE s.CodServ='S00001';  
-			OPEN saserv_Cursor
-			FETCH NEXT FROM saserv_Cursor into @v_descrip,@v_precio1,@v_codtax,@v_monto
-			WHILE @@FETCH_STATUS = 0
-			BEGIN
-				if (@v_codtax>0) 
-				  BEGIN
-					SET @d_tax = (@i_monto_alquiler*@v_monto)/100;
-					SET @c_tgravable = @i_monto_alquiler;
-					SET @d_monto = @d_tax + @i_monto_alquiler;
-					
-					INSERT INTO SATAXITF(CodSucu,TipoFac,NumeroD,NroLinea,NroLineaC,CodItem,CodTaxs,Monto,TGravable,MtoTax)
-						VALUES ('00000','F',@correl,1,0,'S00001',@v_codtax,@d_monto,@d_monto,@d_tax); 
-					
-					INSERT INTO SATAXVTA(CodSucu,TipoFac,NumeroD,CodTaxs,Monto,TGravable,MtoTax,EsReten)
-						VALUES ('00000','F',@correl,@v_codtax,'S00001',@c_tgravable,@d_tax,1);     
-				  END
-				ELSE
-				  BEGIN
-					SET @d_tax = 0;
-					SET @c_texento = @i_monto_alquiler;
-					SET @d_monto = @i_monto_alquiler;
-				  END;
-				
-				INSERT INTO SAITEMFAC(CodSucu,TipoFac,NumeroD,NroLinea,NroLineaC,CodItem,CodUbic,CodVend,Descrip1,Refere,Signo,CantMayor,Cantidad,TotalItem,Precio,MtoTax,PriceO,FechaE,EsServ)
-						VALUES ('00000','F',@correl,1,0,'S00001',@i_codubic,'001',@v_descrip,'S00001',1,1,1,@d_monto,@d_monto,@d_tax,@d_monto,@i_fechae,1);   
-				FETCH NEXT FROM saserv_Cursor into @v_descrip,@v_precio1,@v_codtax,@v_monto
-			END
+			SELECT @v_descrip=s.Descrip,@v_precio1=s.Precio1, @v_codtax=t.CodTaxs, @v_monto=t.Monto
+			FROM SASERV s
+			LEFT JOIN SATAXSRV t on s.CodServ=t.CodServ
+			WHERE s.CodServ='S00001';  
 
-			CLOSE saserv_Cursor;  
-			DEALLOCATE saserv_Cursor; 
+			if (ISNULL(@v_monto,0)>0) 
+			BEGIN
+				SET @d_tax = (@i_monto_alquiler*@v_monto)/100;
+				SET @c_tgravable = @i_monto_alquiler;
+				SET @d_monto = @d_tax + @i_monto_alquiler;
+					
+				INSERT INTO SATAXITF(CodSucu,TipoFac,NumeroD,NroLinea,NroLineaC,CodItem,CodTaxs,Monto,TGravable,MtoTax)
+					VALUES ('00000','F',@correl,1,0,'S00001',@v_codtax,@d_monto,@d_monto,@d_tax); 
+					
+				INSERT INTO SATAXVTA(CodSucu,TipoFac,NumeroD,CodTaxs,Monto,TGravable,MtoTax,EsReten)
+					VALUES ('00000','F',@correl,@v_codtax,@d_monto,@c_tgravable,@d_tax,1);     
+			END
+			ELSE
+			BEGIN
+				SET @d_tax = 0;
+				SET @c_texento = @i_monto_alquiler;
+				SET @d_monto = @i_monto_alquiler;
+			END;
+				
+			INSERT INTO SAITEMFAC(CodSucu,TipoFac,NumeroD,NroLinea,NroLineaC,CodItem,CodUbic,CodVend,Descrip1,Refere,Signo,CantMayor,Cantidad,TotalItem,Precio,MtoTax,PriceO,FechaE,EsServ)
+					VALUES ('00000','F',@correl,1,0,'S00001',@i_codubic,'001',@v_descrip,'S00001',1,1,1,@d_monto,@d_monto,@d_tax,@d_monto,@i_fechae,1);   
 			/*************************************************************************************************************************/
 			INSERT INTO ISCO_PRESUPUESTOS(numerod,usuario) VALUES (@correl,@i_codusua);
 		  END
@@ -279,8 +292,8 @@ SET @i = 1;
 		  UPDATE SAFACT 
 				SET Monto=@d_monto, MtoTax=@d_tax,TGravable=@c_tgravable,TExento=@c_texento,MtoTotal=@d_monto,Credito=@d_monto,TotalSrv=@i_monto_alquiler
 				WHERE NumeroD=@correl and TipoFac='F'
-		  SET @i = @i + 1
-		  FETCH NEXT FROM vista_Cursor into @i_codclie,@i_monto_alquiler,@i_descrip,@i_direc1,@i_direc2
+		  
+		  FETCH NEXT FROM vista_Cursor into @v_local,@i_codclie,@i_monto_alquiler,@i_descrip,@i_direc1,@i_direc2
 		END
 		/****************************************************** UPDATE SAFACT *****************************************************/
 		  
@@ -290,12 +303,12 @@ SET @i = 1;
 		SET @salida = 1;
     END TRY
 	BEGIN CATCH
-		SELECT ERROR_NUMBER() AS errNumber
+		SELECT /*ERROR_NUMBER() AS errNumber
 	       , ERROR_SEVERITY() AS errSeverity 
 	       , ERROR_STATE() AS errState
 	       , ERROR_PROCEDURE() AS errProcedure
 	       , ERROR_LINE() AS errLine
-	       , ERROR_MESSAGE() AS errMessage
+	       ,*/ ERROR_MESSAGE() AS errMessage
 		SET @salida = -1;
 		ROLLBACK TRAN Arrendamiento
 	END CATCH

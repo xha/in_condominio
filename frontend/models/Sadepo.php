@@ -58,4 +58,9 @@ class Sadepo extends \yii\db\ActiveRecord
             'Printer' => 'Printer',
         ];
     }
+
+    public function getICodUbic()
+    {
+        return $this->hasMany(Sadepo::className(), ['CodUbic' => 'CodUbic']);
+    }
 }

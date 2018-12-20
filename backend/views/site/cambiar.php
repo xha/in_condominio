@@ -12,13 +12,18 @@ $this->title = 'Cambiar Clave';
 
 $this->params['breadcrumbs'][] = $this->title;
 $id_usuario = Yii::$app->user->identity->id_usuario;
+$this->registerJsFile('@web/js/index.js');
 ?>
-
-<h3><?= $msg ?></h3>
-
+<?= ercling\pace\PaceWidget::widget(); ?>
+<h3 id='msj_principal'><?= $msg ?></h3>
+<br />
 <div class="cambiar-form">
 
     <?php $form = ActiveForm::begin(); ?>
+
+	<center>
+        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-save"></i> Actualizar' : '<i class="fa fa-save"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </center>
 
     <?= $form->field($model, 'id_usuario')->hiddenInput(['value' => $id_usuario])->label(false) ?>
     
@@ -27,10 +32,6 @@ $id_usuario = Yii::$app->user->identity->id_usuario;
     <?= $form->field($model, 'clave')->textInput(['maxlength' => true, 'type' => 'password']) ?>
 
     <?= $form->field($model, 'repetir_clave')->textInput(['maxlength' => true, 'type' => 'password']) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Actualizar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>    
 
     <?php ActiveForm::end(); ?>
 </div>

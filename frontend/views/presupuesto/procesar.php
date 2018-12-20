@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\jui\DatePicker;
 use kartik\tabs\TabsX;
-use frontend\models\Savend;
+use frontend\models\CComercial;
 use frontend\models\Sadepo;
 
 /* @var $this yii\web\View */
@@ -20,7 +20,7 @@ use frontend\models\Sadepo;
     $this->params['breadcrumbs'][] = ['label' => 'Presupuestos', 'url' => ['index']];
     $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+<?= ercling\pace\PaceWidget::widget(); ?>
 <div class="procesar-form">
 
     <div class="form-group">

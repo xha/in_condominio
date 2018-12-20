@@ -16,7 +16,7 @@
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.10",
-        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-bootstrap": "^2.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "kartik-v/yii2-widget-datetimepicker": "*",
         "yiisoft/yii2-jui": "^2.0",
@@ -26,7 +26,8 @@
         "kartik-v/yii2-mpdf": "*",
         "itbz/fpdf": "dev-master",
         "dmstr/yii2-adminlte-asset": "2.*",
-        "kartik-v/yii2-tabs-x": "@dev"
+        "kartik-v/yii2-tabs-x": "@dev",
+        "ercling/yii2-pace": "master@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

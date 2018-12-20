@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\CorrelSearch */
@@ -12,9 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="correl-index">
 
-    <p>
-        <?= Html::a('Crear Correl', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <center>
+        <?= Html::a('<i class="fa fa-file"></i> Crear Correlativo', ['create'], ['class' => 'btn btn-success']) ?>
+    </center>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -22,7 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //['class' => 'yii\grid\SerialColumn'],
 
             'id_correl',
+            'CodVend',
             'canon',
+            'activo:boolean',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

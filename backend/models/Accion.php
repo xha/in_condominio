@@ -32,7 +32,8 @@ class Accion extends \yii\db\ActiveRecord
         return [
             [['descripcion'], 'required'],
             [['activo'], 'boolean'],
-            [['descripcion'], 'string', 'max' => 250],
+            [['nivel', 'id_padre'], 'integer'],
+            [['descripcion', 'alias'], 'string', 'max' => 250],
         ];
     }
 
@@ -42,8 +43,11 @@ class Accion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_accion' => 'Id Accion',
-            'descripcion' => 'Descripcion',
+            'id_accion' => 'Id',
+            'alias' => 'Alias',
+            'id_padre' => 'Padre',
+            'nivel' => 'Nivel',
+            'descripcion' => 'Ruta',
             'activo' => 'Activo',
         ];
     }

@@ -11,7 +11,7 @@ use app\models\RolUsuario;
 /* @var $model app\models\RolUsuario */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?= ercling\pace\PaceWidget::widget(); ?>
 <div class="rol-usuario-form">
 
     <?php $form = ActiveForm::begin(); ?>

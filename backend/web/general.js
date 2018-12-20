@@ -58,17 +58,90 @@ function respuesta(response) {
     }
 }
 
+function soloNumeros(e){
+    var key = window.event ? e.which : e.keyCode;
+    
+    if ((key == 110) || (key == 9) || (key == 116)) return false;
+    if (key == 8) return true;
+    if (key < 48 || key > 57) {
+        if (key < 96 || key > 105) e.preventDefault();
+    }
+}
+
+function soloEnteros(e){
+    var key = window.event ? e.which : e.keyCode;
+
+    if ((key == 8) || (key == 9) || (key == 116)) return false;
+    if (key < 48 || key > 57) {
+        if (key < 96 || key > 105) e.preventDefault();
+    }
+}
+
+function soloLetras(letra){
+        key = letra.keyCode || letra.which;
+        tecla = String.fromCharCode(key).toLowerCase();
+        letras = "áéíóúabcdefghijklmnñopqrstuvwxyz";
+        especiales = "8-37-39-46";
+
+        tecla_especial = false
+        for(var i in especiales){
+            if(key == especiales[i]){
+                tecla_especial = true;
+                break;
+            }
+        }
+
+        
+        if(letras.indexOf(tecla)==-1 && !tecla_especial && key != '32'){
+            return false;
+        }
+    }
+
+    function letrasNumeros(e){
+        key = e.keyCode || e.which;
+        tecla = String.fromCharCode(key).toLowerCase();
+        alfa = "áéíóúabcdefghijklmnñopqrstuvwxyz1234567890";
+        especiales = "8-37-39-46-32";
+        tecla_especial2 = false
+        for(var i in especiales){
+            if(key == especiales[i]){
+                tecla_especial2 = true;
+                break;
+                console.log(especiales[i])
+            }
+        }
+
+        if(alfa.indexOf(tecla)==-1 && !tecla_especial2 && key != '32'){
+            return false;
+        }
+    }
+
+function Solo_Cantidad(variable){
+    var cantidad = trae(variable);
+    var aux = 0;
+    var i;
+    
+    for (i=0;i<cantidad.value.length;i++){
+        if (cantidad.value.charAt(i)=='.'){
+            aux++;
+        }
+    }
+    
+    if ((aux==1) && (cantidad.value.length==1)) cantidad.value = cantidad.value.slice(0,(cantidad.value.length-1));
+    if (aux>1) cantidad.value = cantidad.value.slice(0,(cantidad.value.length-1));
+}
+
 function entero(e){
-      	var tipo=e.keyCode;
-      	if ((tipo == 8) || (tipo == 9))  
-            return true; // 3 8,37,39,46
-        var key = '';
-        var strCheck = '0123456789.';
-        var whichCode = (window.Event) ? e.which : e.keyCode;
-        //if (whichCode == 13) return true; // Enter
-        key = String.fromCharCode(whichCode); // Get key value from key code
-        if (strCheck.indexOf(key) == -1) 
-            return false; // Not a valid key
+    var tipo=e.keyCode;
+    if ((tipo == 8) || (tipo == 9))  
+        return true; // 3 8,37,39,46
+    var key = '';
+    var strCheck = '0123456789.';
+    var whichCode = (window.Event) ? e.which : e.keyCode;
+    //if (whichCode == 13) return true; // Enter
+    key = String.fromCharCode(whichCode); // Get key value from key code
+    if (strCheck.indexOf(key) == -1) 
+        return false; // Not a valid key
 }
 
 function valida_cantidad(campo){
@@ -110,6 +183,7 @@ function add_filas(row, clase, funcion, falso, limite, identi) {
     if (!falso) {
         falso = "";
     }
+
     if (!limite) {
         limite = "";
     }
@@ -136,10 +210,7 @@ function add_filas(row, clase, funcion, falso, limite, identi) {
         }
         
         td[i] = document.createElement(clase);
-        if (clase=='td') {
-            td[i].align = 'left';
-        }
-
+        
         if (falso!="") {
             if (row[parseInt(falso)]=='0') {
                 td[i].style.backgroundColor = '#FFE1E1';
@@ -176,32 +247,34 @@ function add_filas(row, clase, funcion, falso, limite, identi) {
                     imagen.width = "28";
                     imagen.style.padding = "3px";
                     imagen.tittle = otro;
+                    imagen.title = funciones[i];
                     imagen.id = "add_fila_i_"+row[identi];
                     switch(i) {
                         case 0:
                             imagen.src = "../../../img/edit.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                         break;
                         case 1:
                             imagen.src = "../../../img/imprimir.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                         break;
                         case 2:
                             imagen.src = "../../../img/buscar.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                         break;
                         case 3:
                             imagen.src = "../../../img/devolver.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                         break;
                         case 4:
                             imagen.src = "../../../img/delete.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
+                        break;
+                        case 5:
+                            imagen.src = "../../../img/pie.png";
+                        break;
+                        case 6:
+                            imagen.src = "../../../img/bar.png";
                         break;
                         default:
                             imagen.src = "../../../img/delete.png";
-                            eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                     }
+                    eval("imagen.onclick = function(){"+funciones[i]+"(this.tittle);}");
                     td.appendChild(imagen);
                 }
             }

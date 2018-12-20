@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "ISCO_ALICUOTA".
  *
- * @property integer $id_alicuota
+ * @property integer $id_local
  * @property string $CodClie
  * @property integer $id_ubicacion
  * @property integer $id_piso
@@ -27,7 +27,7 @@ class Local extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'ISCO_ALICUOTA';
+        return 'ISCO_Local';
     }
 
     /**
@@ -38,9 +38,10 @@ class Local extends \yii\db\ActiveRecord
         return [
             [['CodClie','id_ubicacion', 'id_piso', 'descripcion', 'metro', 'CodVend'], 'required'],
             [['descripcion'], 'string'],
+            [['descripcion'], 'unique'],
             [['id_ubicacion', 'id_piso', 'alquiler', 'tipo_alquiler', 'activo'], 'integer'],
-            [['porcentaje', 'porcentaje_alquiler'], 'number', 'max' => 100],
-            [['monto_alquiler'], 'number'],
+            [['porcentaje_alicuota', 'porcentaje_alquiler'], 'number', 'max' => 100],
+            [['monto_alquiler','monto_alicuota'], 'number'],
             [['metro'], 'number', 'min' => 1, 'max' => 999],
             [['CodClie'], 'exist', 'skipOnError' => true, 'targetClass' => Saclie::className(), 'targetAttribute' => ['CodClie' => 'CodClie']],
             [['id_ubicacion'], 'exist', 'skipOnError' => true, 'targetClass' => Ubicacion::className(), 'targetAttribute' => ['id_ubicacion' => 'id_ubicacion']],
@@ -54,16 +55,17 @@ class Local extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_alicuota' => 'Id',
+            'id_local' => 'Id',
             'CodClie' => 'Cliente',
             'id_ubicacion' => 'Ubicacion',
             'id_piso' => 'Piso',
             'descripcion' => 'Descripcion del Local',
             'metro' => 'Metros Cuadrados',
-            'porcentaje' => 'Porcentaje',
+            'porcentaje_alicuota' => 'Porcentaje de Alicuota',
             'alquiler' => '¿Tiene Arrendamiento?',
             'tipo_alquiler' => 'Tipo de Arrendamiento',
             'monto_alquiler' => 'Monto de Arrendamiento (o porcentaje según Cánon)',
+            'monto_alicuota' => 'Monto de la Alicuota',
             'porcentaje_alquiler' => 'Porcentaje de Arrendamiento mixto',
             'activo' => 'Activo',
             'CodVend' => 'Centro Comercial',

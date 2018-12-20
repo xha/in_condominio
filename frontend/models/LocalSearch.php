@@ -18,10 +18,10 @@ class LocalSearch extends Local
     public function rules()
     {
         return [
-            [['id_alicuota', 'id_ubicacion', 'id_piso', 'alquiler', 'activo', 'tipo_alquiler'], 'integer'],
+            [['id_local', 'id_ubicacion', 'id_piso', 'alquiler', 'activo', 'tipo_alquiler'], 'integer'],
             [['CodClie', 'descripcion'], 'safe'],
             [['CodVend'], 'string'],
-            [['porcentaje','metro', 'monto_alquiler', 'porcentaje_alquiler'], 'number'],
+            [['porcentaje_alicuota','metro', 'monto_alquiler', 'porcentaje_alquiler'], 'number'],
         ];
     }
 
@@ -61,10 +61,10 @@ class LocalSearch extends Local
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_alicuota' => $this->id_alicuota,
+            'id_local' => $this->id_local,
             'id_ubicacion' => $this->id_ubicacion,
             'id_piso' => $this->id_piso,
-            'porcentaje' => $this->porcentaje,
+            'porcentaje_alicuota' => $this->porcentaje_alicuota,
             'metro' => $this->metro,
             'alquiler' => $this->alquiler,
             'activo' => $this->activo,

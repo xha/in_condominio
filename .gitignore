@@ -41,3 +41,5 @@ protected/runtime/*
 protected/data/*.db
 themes/classic/views/
 origin/master
+/backend/web/assets/
+/frontend/web/assets/

@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     
 
     <p>
-        <?= Html::a('Actualizar', ['update', 'id' => $model->id_accion], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Desactivar', ['delete', 'id' => $model->id_accion], [
+        <?= Html::a('<i class="fa fa-save"></i> Actualizar', ['update', 'id' => $model->id_accion], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="fa fa-close"></i> Desactivar', ['delete', 'id' => $model->id_accion], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Confirmar Desactivado',
@@ -30,6 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id_accion',
             'descripcion',
+            'alias',
+            'nivel',
+            'id_padre',
             'activo:boolean',
         ],
     ]) ?>

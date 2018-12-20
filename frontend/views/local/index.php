@@ -12,14 +12,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="local-index">
 
-    <p>
-        <?= Html::a('Crear Local', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <center>
+        <?= Html::a('<i class="fa fa-file"></i> Crear Local', ['create'], ['class' => 'btn btn-success']) ?>
+    </center>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'id_alicuota',
+            'id_local',
             [
               'attribute'=>'CodClie',
               'value'=>'codClies.Descrip',
@@ -33,8 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
               'value'=>'idPiso.nombre',
             ],
             'metro',
-             'porcentaje',
-            // 'alquiler',
+            'porcentaje_alicuota',
+            'monto_alquiler',
             // 'activo',
 
             ['class' => 'yii\grid\ActionColumn'],

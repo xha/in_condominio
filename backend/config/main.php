@@ -20,13 +20,18 @@ return [
         ],
         'user' => [
             'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            //'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'enableAutoLogin' => false,
+            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'authTimeout'     => 60*10
+            //'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            //'authTimeout' => 60*60*24*30,
+            //'enableSession' => true,
+            //'autoRenewCookie' => true,
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
             //'name' => 'advanced-backend',
+            //'timeout' => 10,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -46,6 +51,22 @@ return [
             'rules' => [
             ],
         ],
+    ],
+    'as beforeRequest' => [
+        'class' => 'yii\filters\AccessControl',
+        'rules' => [
+            [
+                'allow' => true,
+                'actions' => ['login'],
+            ],
+            [
+                'allow' => true,
+                'roles' => ['@'],
+            ],
+        ],
+        'denyCallback' => function () {
+            return Yii::$app->response->redirect(['site/login']);
+        },
     ],
     'params' => $params,
 ];

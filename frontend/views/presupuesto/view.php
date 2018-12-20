@@ -13,11 +13,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="presupuesto-view">
 
     <p>
-        <?= Html::a('Actualizar', ['update', 'CodSucu' => $model->CodSucu, 'NumeroD' => $model->NumeroD, 'TipoFac' => $model->TipoFac], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Borrar', ['delete', 'CodSucu' => $model->CodSucu, 'NumeroD' => $model->NumeroD, 'TipoFac' => $model->TipoFac], [
+        <?= Html::a('<i class="fa fa-save"></i> Actualizar', ['update', 'CodSucu' => $model->CodSucu, 'NumeroD' => $model->NumeroD, 'TipoFac' => $model->TipoFac], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="fa fa-close"></i> Desactivar', ['delete', 'CodSucu' => $model->CodSucu, 'NumeroD' => $model->NumeroD, 'TipoFac' => $model->TipoFac], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Confirmar Borrado',
+                'confirm' => 'Confirmar Desactivado',
                 'method' => 'post',
             ],
         ]) ?>

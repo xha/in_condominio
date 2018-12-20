@@ -7,14 +7,14 @@ use yii\widgets\DetailView;
 /* @var $model frontend\models\Ccomercial */
 
 $this->title = $model->CodVend;
-$this->params['breadcrumbs'][] = ['label' => 'centro comercial', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Centro Comercial', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ccomercial-view">
 
     <p>
-        <?= Html::a('Actualizar', ['update', 'id' => $model->CodVend], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Desactivar', ['delete', 'id' => $model->CodVend], [
+        <?= Html::a('<i class="fa fa-save"></i> Actualizar', ['update', 'id' => $model->CodVend], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="fa fa-close"></i> Desactivar', ['delete', 'id' => $model->CodVend], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Confirmar Desactivado',
@@ -30,9 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'Descrip',
             //'TipoID3',
             //'TipoID',
-            //'ID3',
+            'ID3',
             'DescOrder',
-            //'Clase',
+            'Clase',
             'Direc1',
             'Direc2',
             'Telef',

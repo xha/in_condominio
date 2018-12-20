@@ -156,11 +156,11 @@ class SiteController extends Controller
                 //print_r($table->getErrors());die;
                 if ($table->insert(false))
                 {
-                    $msg = "Registro Guardado, Debe esperar que un administrador active su cuenta";
+                    $msg = "1|Registro Guardado, Debe esperar que un administrador active su cuenta";
                 }
                 else
                 {
-                    $msg = "Error al guardar";
+                    $msg = "-1|Error al guardar";
                 }
             } else {
                 $model->getErrors();
@@ -202,9 +202,9 @@ class SiteController extends Controller
                 $salida = $connection->createCommand($query)->queryOne();
         
                 if ($salida['clave']!="") {
-                    $msg = "Clave Actualizada";
+                    $msg = "1|Clave Actualizada";
                 } else {
-                    $msg = "Error al actualizar la clave";
+                    $msg = "-1|Error al actualizar la clave";
                 }
                 
             } else {
@@ -247,9 +247,9 @@ class SiteController extends Controller
             $msg = $connection->createCommand($query)->execute();
             
             if ($msg > 0) {
-                $msg = "Registro Guardado";
+                $msg = "1|Registro Guardado";
             } else {
-                $msg = "Error al Actualizar";
+                $msg = "-1|Error al Actualizar";
             };
         }
 
@@ -287,9 +287,9 @@ class SiteController extends Controller
             $msg = $connection->createCommand($query)->execute();
             
             if ($msg > 0) {
-                $msg = "Registro Actualizado";
+                $msg = "1|Registro Actualizado";
             } else {
-                $msg = "Error al Actualizar";
+                $msg = "-1|Error al Actualizar";
             };
         }
         

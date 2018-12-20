@@ -1,3 +1,4 @@
+$(document).ajaxStart(function() { Pace.restart(); });
     $(function() {
         titulo_detalle();
         var numerod = document.getElementById('presupuesto-numerod').value;
@@ -22,8 +23,8 @@
                         campos.push(0);
                         campos.push(data[i].TotalItem);
                         campos.push(1);
-                        campos.push('');
-                        tabla.appendChild(add_filas(campos, 'td','editar_detalle####borrar_detalle','',9));
+                        campos.push(data[i].CodTaxs);
+                        tabla.appendChild(add_filas(campos, 'td','editar_detalle####Borrar_detalle','',9));
                     }
                 }
 
@@ -91,7 +92,7 @@
 
             trae('presupuesto-totalprd').value = total_producto;
             trae('presupuesto-totalsrv').value = total_servicio;
-            trae('presupuesto-costoprd').value = costo_producto;
+            //trae('presupuesto-costoprd').value = costo_producto;
             trae('presupuesto-costosrv').value = costo_servicio;
             trae('presupuesto-monto').value = total_producto + total_servicio;
             trae('presupuesto-mtotax').value = impuesto;
@@ -288,7 +289,7 @@
             campos.push(total);
             campos.push(tipo_item);
             campos.push(d_iva);
-            tabla.appendChild(add_filas(campos, 'td','editar_detalle####borrar_detalle','',9));
+            tabla.appendChild(add_filas(campos, 'td','editar_detalle####Borrar_detalle','',9));
         } else {
             var tr = trae('add_filas_'+fila.value);
             $(tr).children("td").each(function (index) {
@@ -367,7 +368,7 @@
         carga_servicios(d_codigo.value);
     }
 
-    function borrar_detalle(response) {
+    function Borrar_detalle(response) {
         var tabla = trae('listado_detalle');
         var arreglo = response.split("#");
         tabla.deleteRow(arreglo[0]);

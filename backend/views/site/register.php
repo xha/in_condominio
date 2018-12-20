@@ -4,15 +4,17 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use backend\models\Pregunta;
-use backend\models\Sadepo;
+use frontend\models\Sadepo;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
 /* @var $form yii\widgets\ActiveForm */
 $this->title = 'Registro';
+$this->registerJsFile('@web/js/index.js');
 ?>
 
-<div id="msj_principal"><?= $msg ?></div>
+<h3 id='msj_principal'><?= $msg ?></h3>
+<br />
 
 <div class="register-form">
 
@@ -24,45 +26,67 @@ $this->title = 'Registro';
     ]);
     ?>
 
-    <?= $form->field($model, 'usuario')->textInput(['maxlength' => true,'enableAjaxValidation' => true]) ?>
+    <center>
+        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-save"></i> Crear' : '<i class="fa fa-save"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </center>
 
-    <?= $form->field($model, 'correo')->textInput(['maxlength' => true]) ?>
+    <div class="container-fluid">
+        <div class="col-md-3">
+            <?= $form->field($model, 'usuario')->textInput(['maxlength' => true,'enableAjaxValidation' => true]) ?>
+        </div>
 
-    <?= $form->field($model, 'cedula')->textInput(['maxlength' => true]) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'correo')->textInput(['maxlength' => true]) ?>
+        </div>
 
-    <?= $form->field($model, 'clave')->textInput(['maxlength' => true, 'type' => 'password']) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'cedula')->textInput(['maxlength' => true]) ?>
+        </div>
 
-    <?= $form->field($model, 'repetir_clave')->textInput(['maxlength' => true, 'type' => 'password']) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'sexo')->dropDownList(['F' => 'Femenino', 'M' => 'Masculino']); ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    <div class="container-fluid">
+        <div class="col-md-3">
+            <?= $form->field($model, 'clave')->textInput(['maxlength' => true, 'type' => 'password']) ?>
+        </div>
 
-    <?= $form->field($model, 'apellido')->textInput(['maxlength' => true]) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'repetir_clave')->textInput(['maxlength' => true, 'type' => 'password']) ?>
+        </div>
 
-    <?= $form->field($model, 'sexo')->dropDownList(['F' => 'Femenino', 'M' => 'Masculino']); ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+        </div>
 
-    <label class="control-label">Pregunta</label>
-    <?= Html::activeDropDownList($model, 'id_pregunta',
-      ArrayHelper::map(Pregunta::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_pregunta', 'descripcion'), ['class'=>'form-control']) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'apellido')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
-    <br />
-    <?= $form->field($model, 'respuesta_seguridad')->textInput(['maxlength' => true]) ?>
+    <div class="container-fluid">
+        <div class="col-md-3">
+            <label class="control-label">Pregunta</label>
+            <?= Html::activeDropDownList($model, 'id_pregunta',
+              ArrayHelper::map(Pregunta::find()->where(['activo' => '1'])->OrderBy('descripcion')->all(), 'id_pregunta', 'descripcion'), ['class'=>'form-control']) ?>
+            <br />
+        </div>
 
-    <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'respuesta_seguridad')->textInput(['maxlength' => true]) ?>
+        </div>
 
-    <?= $form->field($model, 'CodUbic')->dropDownList(ArrayHelper::map(Sadepo::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodUbic', 'CodUbic', 'Descrip')); ?>
-    
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <div class="col-md-3">
+            <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>
+        </div>
+
+        <div class="col-md-3">
+            <?= $form->field($model, 'CodUbic')->dropDownList(ArrayHelper::map(Sadepo::find()->where(['activo' => '1'])->OrderBy('Descrip')->all(), 'CodUbic', 'CodUbic', 'Descrip')); ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
-<script type="text/javascript">
-    window.onload = function() {
-        var msj_principal = trae('msj_principal').innerHTML;
-        if (msj_principal!="") {
-            oculta_mensaje('msj_principal',msj_principal,1);
-        }
-    };
-</script>

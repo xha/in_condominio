@@ -13,9 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="presupuesto-index">
 
-    <p>
-        <?= Html::a('Crear Presupuesto', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <center>
+        <?= Html::a('<i class="fa fa-file"></i> Crear Presupuesto', ['create'], ['class' => 'btn btn-success']) ?>
+    </center>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

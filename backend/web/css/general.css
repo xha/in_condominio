@@ -80,7 +80,7 @@ input[readonly] {
 }
 
 .inicial00 {
-    width: 100%;
+    width: 99%;
 }
 
 .inicial_1 {
@@ -188,11 +188,15 @@ textarea {
     font-size: 14px;
     height: 34px;
     line-height: 1.42857;
-    padding: 6px 12px;
+    padding: 6px;
     float: left;
     margin-right: 5px;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
     min-height: 25px;
+}
+
+.texto-xxc {
+    width: 3em;
 }
 
 .texto-xc {
@@ -258,8 +262,9 @@ a {
 
 .divScroll {
     width: 100%; 
-    min-height: 400px;
-    overflow-y: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 400px;
 } 
 
 .modalmask {
@@ -364,12 +369,33 @@ a {
     text-align: center;
 }
 
-.tablas th:first-child {
+.tables th {
+    text-align: center;   
+    background-color: #222d32;
+    color: #FFF;
+}
+
+.tables th:first-child {
+    border-radius: 6px 0 0 0;
+}
+
+.tables th:last-child {
+    border-radius:  0 6px 0 0 ;
+}
+
+/*.tablas th:first-child {
     border-radius: 6px 0 0 0;
 }
 
 .tablas th:last-child {
     border-radius:  0 6px 0 0 ;
+}*/
+
+.tablas tr:nth-child(odd) {
+    background-color:#f2f2f2;
+}
+.tablas tr:nth-child(even) {
+    background-color:#fbfbfb;
 }
 
 .tablas td {

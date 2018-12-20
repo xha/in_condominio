@@ -12,9 +12,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ccomercial-index">
 
-    <p>
-        <?= Html::a('Crear Centro Comercial', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <center>
+        <?= Html::a('<i class="fa fa-file"></i> Crear Centro Comercial', ['create'], ['class' => 'btn btn-success']) ?>
+    </center>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -28,13 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'Descrip',
             //'TipoID3',
             //'TipoID',
-            //'ID3',
+            'ID3',
             //'DescOrder',
             [
               'attribute'=>'DescOrder',
-              'value'=>'codUbic.Descrip',
+              'value'=>'iCodUbic.Descrip',
             ],
-            // 'Clase',
+            'Clase',
             'Direc1',
             // 'Direc2',
             // 'Telef',

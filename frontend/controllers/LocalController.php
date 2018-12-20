@@ -5,9 +5,11 @@ namespace frontend\controllers;
 use Yii;
 use app\models\Local;
 use frontend\models\LocalSearch;
+use common\models\AccessHelpers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * LocalController implements the CRUD actions for Local model.
@@ -27,6 +29,15 @@ class LocalController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        return AccessHelpers::chequeo();
     }
 
     /**
@@ -71,14 +82,16 @@ class LocalController extends Controller
                 $model->porcentaje_alquiler = 0;
             }
             $model->save();
+
             $connection = \Yii::$app->db;
             $query = "SET ANSI_NULLS ON; SET ANSI_WARNINGS ON; SET NOCOUNT ON; EXEC ISCO_PROCESA_ALICUOTA";
             $connection->createCommand($query)->execute();
             
-            return $this->redirect(['view', 'id' => $model->id_alicuota]);
+            return $this->redirect(['view', 'id' => $model->id_local]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'canon' => 0,
             ]);
         }
     }
@@ -92,16 +105,22 @@ class LocalController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $canon = $this->actionBuscaCanon($model->CodVend);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $connection = \Yii::$app->db;
+
+            $model->save();
+
             $connection = \Yii::$app->db;
             $query = "SET ANSI_NULLS ON; SET ANSI_WARNINGS ON; SET NOCOUNT ON; EXEC ISCO_PROCESA_ALICUOTA";
             $connection->createCommand($query)->execute();
             
-            return $this->redirect(['view', 'id' => $model->id_alicuota]);
+            return $this->redirect(['view', 'id' => $model->id_local]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'canon' => $canon,
             ]);
         }
     }
@@ -114,8 +133,7 @@ class LocalController extends Controller
      */
     public function actionDelete($id)
     {
-        $connection = \Yii::$app->db;
-        $query = "UPDATE ISCO_Alicuota SET activo=0 WHERE id_alicuota=".$id;
+        $query = "UPDATE ISCO_Local SET activo=0 WHERE id_local=".$id;
         $connection->createCommand($query)->query();
         //$this->findModel($id)->delete();
 
@@ -136,5 +154,19 @@ class LocalController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    function actionBuscaCanon($CodVend) {
+        $connection = \Yii::$app->db;
+        $query = "SELECT top(1) canon FROM ISCO_Correl WHERE CodVend='".$CodVend."'";
+        $rs = $connection->createCommand($query)->queryOne();
+
+        if ($rs['canon']>0) {
+            $canon = $rs['canon'];
+        } else {
+            $canon = 0;
+        }
+
+        return ($canon);
     }
 }

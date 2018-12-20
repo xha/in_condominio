@@ -345,6 +345,20 @@ a {
     color:#222;
 }
 
+.tables th {
+    text-align: center;   
+    background-color: #222d32;
+    color: #FFF;
+}
+
+.tables th:first-child {
+    border-radius: 6px 0 0 0;
+}
+
+.tables th:last-child {
+    border-radius:  0 6px 0 0 ;
+}
+
 .tablas {
     max-width: 100%; 
     max-height: 600px;

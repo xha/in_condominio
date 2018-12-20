@@ -18,8 +18,8 @@ class AccionSearch extends Accion
     public function rules()
     {
         return [
-            [['id_accion'], 'integer'],
-            [['descripcion'], 'safe'],
+            [['id_accion','nivel', 'id_padre'], 'integer'],
+            [['descripcion','alias'], 'safe'],
             [['activo'], 'boolean'],
         ];
     }
@@ -61,10 +61,13 @@ class AccionSearch extends Accion
         // grid filtering conditions
         $query->andFilterWhere([
             'id_accion' => $this->id_accion,
+            'nivel' => $this->nivel,
+            'id_padre' => $this->id_padre,
             'activo' => $this->activo,
         ]);
 
-        $query->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+        $query->andFilterWhere(['like', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['like', 'alias', $this->alias]);
 
         return $dataProvider;
     }

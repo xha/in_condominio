@@ -21,7 +21,7 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <b>Droguería IPSFA</b><br /> Login
+        <b>Condominio y Arrendamiento</b><br /> Login
     </div>
     <div class="login-box-body">
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
@@ -41,7 +41,7 @@ $fieldOptions2 = [
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
             </div>
             <div class="col-xs-4">
-                <?= Html::submitButton('Entrar', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('<i class="fa fa-check"></i> Entrar', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
             </div>
         </div>
 

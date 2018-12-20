@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     
 
     <p>
-        <?= Html::a('Actualizar', ['update', 'id' => $model->id_pregunta], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Desactivar', ['delete', 'id' => $model->id_pregunta], [
+        <?= Html::a('<i class="fa fa-save"></i> Actualizar', ['update', 'id' => $model->id_pregunta], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<i class="fa fa-close"></i> Desactivar', ['delete', 'id' => $model->id_pregunta], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Confirmar Desactivado',

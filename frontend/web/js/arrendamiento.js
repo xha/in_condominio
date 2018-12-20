@@ -1,25 +1,23 @@
+$(document).ajaxStart(function() { Pace.restart(); });
     function procesar_arrendamiento() {
         var mes = document.getElementById('mes').value;
-        var mensaje = document.getElementById('mensaje');
+        var mensaje = document.getElementById('msj_principal');
         var id_usuario = document.getElementById('id_usuario').value;
+        var codvend = $('#presupuesto-codvend').val();
         var btn_enviar = document.getElementById('btn_enviar');
-        var imag = document.getElementById('imag');
 
-        mensaje.innerHTML = '';
-        btn_enviar.disabled = true;
-        imag.style.visibility = 'visible';
-        $.get('../presupuesto/busca-procesar-arrendamiento',{mes : mes, usuario : id_usuario},function(data){
-            var data = $.parseJSON(data);
-            
-            if (data.salida==1) {
-                mensaje.innerHTML = "Proceso realizado con éxito";
-            } else {
-                mensaje.innerHTML = "Error al procesar";
-            }
-            
-            btn_enviar.disabled = false;
-            imag.style.visibility = 'hidden';
-        });
+        if (codvend!="") {
+            btn_enviar.disabled = true;
+            $.getJSON('../presupuesto/busca-procesar-arrendamiento',{mes : mes, usuario : id_usuario, codvend : codvend},function(data){
+                if (data.salida==1) {
+                    oculta_mensaje('msj_principal',"Proceso realizado con éxito",1);
+                } else {
+                    oculta_mensaje('msj_principal',"Error al procesar",-1);
+                }
+                
+                btn_enviar.disabled = false;
+            });
+        }
     }        
 
     function buscar_presupuesto() {

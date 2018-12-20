@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model frontend\models\Cliente */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?= ercling\pace\PaceWidget::widget(); ?>
 <div class="cliente-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -39,3 +39,6 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+<script type="text/javascript">
+    $(document).ajaxStart(function() { Pace.restart(); });
+</script>

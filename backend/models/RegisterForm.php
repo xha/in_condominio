@@ -39,6 +39,13 @@ class RegisterForm extends model{
             [['id_pregunta'], 'exist', 'skipOnError' => true, 'targetClass' => Pregunta::className(), 'targetAttribute' => ['id_pregunta' => 'id_pregunta']],
         ];
     }
+
+    public function attributeLabels()
+    {
+        return [
+            'CodUbic' => 'Ubicación',
+        ];
+    }
     
     public function correo_existe($attribute, $params) {
         //Buscar el email en la tabla
